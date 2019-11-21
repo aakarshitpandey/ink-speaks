@@ -1,5 +1,5 @@
 import * as express from 'express'
-import * as bycrypt from 'bcryptjs'
+import * as bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken'
 import { validateRegisterInput } from '../api/auth/validator'
 import User from '../models/user'
@@ -30,6 +30,20 @@ router.post('/register', (req, res) => {
                 password: req.body.password
             })
         }
+
+        //Hashing password before saving it in the database
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if (err) {
+                    throw err
+                }
+                newUser.password = hash
+                newUser
+                    .save()
+                    .then(user => res.status(200).json(user))
+                    .catch(err => console.log(err))
+            })
+        })
     })
 })
 
