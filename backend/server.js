@@ -7,7 +7,6 @@ const bodyparser = require('body-parser')
 const userRouter = require('./routes/users')
 const indexRouter = require('./routes/index')
 
-
 //connection to MongoDB
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
