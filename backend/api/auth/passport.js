@@ -1,27 +1,26 @@
 require('dotenv').config();
 
-import * as bcrypt from 'bcryptjs'
-import * as jwt from 'jsonwebtoken'
-import * as passport from 'passport'
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const User = require('../../models/user')
 
-export const login = async (password, user) => {
-    bcrypt.compare(password, user.password)
-        .then(isMatch => {
-            if (isMatch) {
-                // password has been matched
-                // Create the JWT Payload
-                const payload = {
-                    id: user.id,
-                    email: user.email,
-                    name: user.name
-                }
+let opts = {}
 
-                //Sign the JWT Token
-                jwt.sign(
-                    payload,
-                )
-            } else {
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = process.env.PUBLIC_KEY;
 
-            }
+module.exports = (passport) => {
+    passport.use(
+        new JwtStrategy(opts, (jwt_payload, done) => {
+            User.findById(jwt_payload.id)
+                .then(user => {
+                    if (user) {
+                        return done(null, user)
+                    } else {
+                        return done(null, false)
+                    }
+                })
+                .catch(err => console.log(err))
         })
+    );
 }
