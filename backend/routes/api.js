@@ -10,7 +10,7 @@ const validateRegisterInput = require('../api/auth/validator')
 const validateLoginInput = require('../api/auth/validator')
 
 router.get('/', (req, res, next) => {
-  User.findOne({ email: 'aakarshit.pandey7@gmail.com' }).then((users) => {
+  User.find().then((users) => {
     res.status(200).json(users)
   })
 })
@@ -98,7 +98,7 @@ router.post('/login', (req, res) => {
             res.status(200).json({
               success: true,
               token: token,
-              message: `Welcome to the App ${user.name}`
+              message: `Welcome to the App ${user.firstName}`
             })
           }
         )
