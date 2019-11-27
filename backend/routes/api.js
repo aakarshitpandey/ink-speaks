@@ -82,9 +82,12 @@ router.post('/login', (req, res) => {
       if (isMatch) {
         const payload = {
           id: user.id,
-          name: user.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email
         };
+
+        console.log(payload)
 
         //sign token
         jwt.sign(
@@ -103,7 +106,7 @@ router.post('/login', (req, res) => {
           }
         )
       } else {
-        res.status(400).json({ error: 'Password Incorrect' })
+        res.status(400).json({ success: false, error: 'Password Incorrect' })
       }
     })
   })
