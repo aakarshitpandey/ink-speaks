@@ -15,7 +15,13 @@ const app = express();
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
-db.once('open', () => console.log('connected to database'))
+db.once('open', () => console.log('connected to user database'))
+
+//connection to MongoDB
+mongoose.connect(process.env.BLOG_DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+const blogDB = mongoose.connection
+blogDB.on('error', (error) => console.error(error))
+blogDB.once('open', () => console.log('connected to blog database'))
 
 //setup passport
 app.use(passport.initialize())
