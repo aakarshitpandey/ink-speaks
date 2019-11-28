@@ -18,6 +18,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    blogs: {
+        type: Array,
+        default: []
+    },
+    followers: {
+        type: Array,
+        default: []
+    },
+    following: {
+        type: Array,
+        default: []
+    },
     password: {
         type: String,
         required: true

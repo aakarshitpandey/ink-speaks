@@ -3,6 +3,8 @@ const express = require('express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const passport = require('passport')
+const Blog = require('../models/blog')
 
 const router = express.Router()
 
@@ -112,6 +114,59 @@ router.post('/login', (req, res) => {
   })
 })
 
+router.post('/compose', authenticate, (req, res, next) => {
+  if (res.userInfo._id) {
+    const { userInfo } = res
+    const newBlog = new Blog({
+      authorID: res.userInfo._id,
+      authorName: `${userInfo.firstName} ${userInfo.lastName}`,
+      data: req.body.data,
+      categories: req.body.categories
+    })
+    newBlog.save()
+      .then((blog) => {
+        try {
+          updateUser(userInfo._id, { blogs: [...(userInfo.blogs), blog._id] })
+        } catch (err) {
+          console.log(err)
+          res.status(400).json({ msg: 'The userDB could not be updated' })
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(400).json({ msg: "Blog couldn't be saved!" });
+      })
+  }
+})
 
+async function authenticate(req, res, next) {
+  passport.authenticate('jwt', { session: false, failureFlash: 'Authentication failed...Log back in!' }, (err, user, info) => {
+    if (err) {
+      res.status(400).json({ msg: 'There was an error' });
+      console.log(err)
+    }
+
+    if (!user) {
+      res.status(404).json({ msg: 'Invalid Token.' })
+    }
+    //if authentication successfull
+    res.userInfo = user
+    next()
+  })
+}
+
+const updateUser = async (id, data) => {
+  if (data) {
+    try {
+      const res = await User.updateOne({ _id: id }, { ...data });
+      return Promise.resolve({ msg: 'Updated the user', user: res })
+    } catch (err) {
+      console.log(err)
+      return Promise.reject({ ...err, msg: 'Update user failed' })
+    }
+  } else {
+    return Promise.reject({ msg: 'No content passed to updateUser middleware' })
+  }
+}
 
 module.exports = router
