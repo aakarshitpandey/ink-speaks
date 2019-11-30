@@ -19,8 +19,12 @@ const blogSchema = new mongoose.Schema({
         default: { likes: 0 }
     },
     categories: {
-        type: String,
-        default: '',
+        type: Array,
+        default: [],
+    },
+    isPosted: {
+        type: Boolean,
+        default: true,
     },
     date: {
         type: Date,

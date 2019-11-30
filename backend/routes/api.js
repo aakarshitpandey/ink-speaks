@@ -115,18 +115,25 @@ router.post('/login', (req, res) => {
 })
 
 router.post('/compose', authenticate, (req, res, next) => {
+  console.log(`Blog Post request recieved`)
   if (res.userInfo._id) {
     const { userInfo } = res
     const newBlog = new Blog({
       authorID: res.userInfo._id,
       authorName: `${userInfo.firstName} ${userInfo.lastName}`,
       data: req.body.data,
-      categories: req.body.categories
+      categories: req.body.categories,
+      isPosted: req.body.isPosted
     })
     newBlog.save()
       .then((blog) => {
         try {
           updateUser(userInfo._id, { blogs: [...(userInfo.blogs), blog._id] })
+            .then((user) => res.status(200).json({ blog: blog, msg: 'The blog has been saved' }))
+            .catch((err) => {
+              console.log(err)
+              res.status(400).json({ msg: 'The userDB could not be updated' })
+            })
         } catch (err) {
           console.log(err)
           res.status(400).json({ msg: 'The userDB could not be updated' })
@@ -140,19 +147,23 @@ router.post('/compose', authenticate, (req, res, next) => {
 })
 
 async function authenticate(req, res, next) {
-  passport.authenticate('jwt', { session: false, failureFlash: 'Authentication failed...Log back in!' }, (err, user, info) => {
+  console.log(`authenticate`)
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
+
     if (err) {
       res.status(400).json({ msg: 'There was an error' });
-      console.log(err)
+      return
     }
 
     if (!user) {
       res.status(404).json({ msg: 'Invalid Token.' })
+      return
     }
     //if authentication successfull
     res.userInfo = user
+    console.log(user)
     next()
-  })
+  })(req, res, next)
 }
 
 const updateUser = async (id, data) => {
