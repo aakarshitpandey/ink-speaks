@@ -16,7 +16,7 @@ const blogSchema = new mongoose.Schema({
     },
     reactions: {
         type: Object,
-        default: { likes: 0 }
+        default: { likes: 0, views: 0 }
     },
     categories: {
         type: Array,
@@ -29,7 +29,7 @@ const blogSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now,
-    }
+    },
 });
 
 module.exports = mongoose.model("Blog", blogSchema);

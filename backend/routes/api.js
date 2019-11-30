@@ -146,10 +146,42 @@ router.post('/compose', authenticate, (req, res, next) => {
   }
 })
 
+//return all the blog posts
+router.get('/blogs', authenticate, (req, res) => {
+  console.log('Done with authentication')
+  Blog.find({})
+    .then((blogs) => {
+      if (req.body.sendAll === true || blogs.length <= 20) {
+        res.status(200).json({
+          blogs: blogs.sort(compareDates)
+        })
+      } else {
+        res.status(200).json({
+          blogs: blogs.sort(compareDates).slice(0, 20)
+        })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(400).json({ msg: `Error occured` });
+    })
+})
+
+//return the blogs written by a particular user
+router.get('/blogs/:id', authenticate, (req, res) => {
+  Blog.find({ authorID: `${req.params.id}` })
+    .then((blogs) => {
+      res.status(200).json({ blogs: blogs })
+    })
+    .catch(e => {
+      console.log(err)
+      res.status(400).json({ msg: `Error occured` })
+    })
+})
+
 async function authenticate(req, res, next) {
   console.log(`authenticate`)
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
-
     if (err) {
       res.status(400).json({ msg: 'There was an error' });
       return
@@ -161,7 +193,6 @@ async function authenticate(req, res, next) {
     }
     //if authentication successfull
     res.userInfo = user
-    console.log(user)
     next()
   })(req, res, next)
 }
@@ -178,6 +209,15 @@ const updateUser = async (id, data) => {
   } else {
     return Promise.reject({ msg: 'No content passed to updateUser middleware' })
   }
+}
+
+const compareDates = (b1, b2) => {
+  if (b1.date < b2.date) {
+    return 1
+  } else if (b1.date > b2.date) {
+    return -1
+  }
+  return 0
 }
 
 module.exports = router
