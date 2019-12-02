@@ -179,6 +179,71 @@ router.get('/blogs/:id', authenticate, (req, res) => {
     })
 })
 
+//increase the numebr of likes
+router.get('/blogpost/likes/:id', authenticate, (req, res) => {
+  Blog.findOne({ _id: `${req.params.id}` })
+    .then((blog) => {
+      blog.reactions.likes += 1
+      if (isNaN(blog.reactions.views)) {
+        blog.reactions.views = 1
+      }
+      console.log(blog.reactions)
+      Blog.updateOne({ _id: `${req.params.id}` }, { reactions: { ...blog.reactions } })
+        .then((updatedBlog) => {
+          res.status(200).json({ blog: blog })
+        })
+        .catch((err) => {
+          console.log(err)
+          blog.reactions.likes -= 1
+          res.status(200).json({ blog: blog })
+        })
+    })
+    .catch((err) => {
+      res.status(400).send({ msg: err })
+    })
+})
+
+router.get('/blogpost/:id', authenticate, (req, res) => {
+  Blog.findOne({ _id: `${req.params.id}` })
+    .then((blog) => {
+      if (isNaN(blog.reactions.views)) {
+        blog.reactions.views = 1
+      } else {
+        blog.reactions.views += 1
+      }
+      Blog.updateOne({ _id: `${req.params.id}` }, { reactions: { ...blog.reactions } })
+        .then(updatedBlog => {
+          res.status(200).json({ blog: blog })
+        })
+        .catch(err => {
+          res.status(200).json({ blog: blog })
+        })
+    })
+    .catch((err) => {
+      res.status(400).send({ msg: err })
+    })
+})
+
+router.post('/subscribe/', authenticate, (req, res) => {
+  User.findOne({ _id: `${req.body.authorID}` })
+    .then(async (user) => {
+      let response = null;
+      try {
+        if (!user.followers.contains(req.userInfo._id)) {
+          response = await User.updateOne({ _id: `${req.body.authorID}` }, { followers: [...user.followers, req.userInfo._id] })
+        } else {
+          response = await User.updateOne({ _id: `${req.body.authorID}` }, { followers: user.followers.splice(user.followers.indexOf(req.userInfo._id)) })
+        }
+        if (response) {
+          res.send(200).json({ msg: `Toggled Subscribe` });
+        }
+      } catch (e) {
+        console.log(e)
+        res.send(400).json({ msg: `Couldn't toggle subscribe` });
+      }
+    })
+})
+
 async function authenticate(req, res, next) {
   console.log(`authenticate`)
   passport.authenticate('jwt', { session: false }, (err, user, info) => {

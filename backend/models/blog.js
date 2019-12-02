@@ -10,13 +10,17 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    title: {
+        type: String,
+        default: 'No title'
+    },
     data: {
         type: String,
         required: true,
     },
     reactions: {
         type: Object,
-        default: { likes: 0, views: 0 }
+        default: { likes: 0, views: 0, likedUsers: [], viewedUsers: [] }
     },
     categories: {
         type: Array,

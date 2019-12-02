@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import * as ROUTES from './routes/index'
 import Dashboard from './components/Dashboard';
 import Compose from './components/ComposeArticle';
+import Blog from './components/Blog';
 
 const App = () => (
   <Router>
@@ -15,6 +16,7 @@ const App = () => (
       <Route exact path={`${ROUTES.landing}`} component={Landing} />
       <Route path={`${ROUTES.dashboard}`} component={Dashboard} />
       <Route path={`${ROUTES.addArticle}`} component={Compose} />
+      <Route path={`${ROUTES.article}/:id`} component={Blog} />
     </div>
   </Router>
 )

@@ -4,5 +4,6 @@ module.exports = {
     login: '/users/login',
     register: '/users/register',
     dashboard: '/users/dash',
-    addArticle: '/users/compose'
+    addArticle: '/users/compose',
+    article: '/users/article'
 }

@@ -36,7 +36,7 @@ export const getBlogList = async (body) => {
 
 export const getBlogListFromCreator = async (body) => {
     try {
-        const res = await api.get(`${routes.blogs}/${getUser().id}`, {
+        const res = await api.get(`${routes.blogs}${getUser().id}`, {
             ...body,
             headers: {
                 Authorization: `Bearer ${getToken()}`
@@ -47,5 +47,50 @@ export const getBlogListFromCreator = async (body) => {
     } catch (err) {
         console.log(err)
         return Promise.reject({ msg: err.msg })
+    }
+}
+
+export const getBlogById = async (id) => {
+    try {
+        const res = await api.get(`${routes.blogpost}${id}`, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        })
+        console.log(res)
+        return Promise.resolve(res)
+    } catch (err) {
+        console.log(err)
+        return Promise.reject({ msg: err })
+    }
+}
+
+export const likeBlog = async (id) => {
+    try {
+        const res = await api.get(`${routes.like}${id}`, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        })
+        console.log(res)
+        return Promise.resolve(res)
+    } catch (err) {
+        console.log(err)
+        return Promise.reject({ msg: err })
+    }
+}
+
+export const subscribe = async (authorID) => {
+    try {
+        const res = await api.post(`${routes.subscribe}${id}`, { authorID: authorID }, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        })
+        console.log(res)
+        return Promise.resolve(res)
+    } catch (e) {
+        console.log(e)
+        return Promise.reject({ msg: e })
     }
 }
