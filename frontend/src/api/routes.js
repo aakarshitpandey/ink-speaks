@@ -3,8 +3,9 @@ module.exports = {
     register: 'register/',
     compose: 'compose/',
     blogs: 'blogs/',
-    subscribedBlogs: 'blogs/subscriptions',
+    subscribedBlogs: 'blogs/subscriptions/',
     blogpost: 'blogpost/',
     like: 'blogpost/likes/',
-    subscribe: 'subscribe/'
+    subscribe: 'subscribe/',
+    userProfile: 'userProfile/'
 }

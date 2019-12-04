@@ -8,6 +8,7 @@ import * as ROUTES from './routes/index'
 import Dashboard from './components/Dashboard';
 import Compose from './components/ComposeArticle';
 import Blog from './components/Blog';
+import MyAccount from './components/MyAccount';
 
 const App = () => (
   <Router>
@@ -17,6 +18,7 @@ const App = () => (
       <Route path={`${ROUTES.dashboard}`} component={Dashboard} />
       <Route path={`${ROUTES.addArticle}`} component={Compose} />
       <Route path={`${ROUTES.article}/:id`} component={Blog} />
+      <Route path={`${ROUTES.myaccount}`} component={MyAccount} />
     </div>
   </Router>
 )

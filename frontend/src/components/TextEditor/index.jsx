@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import ReactQuill from 'react-quill'
-import { Button } from 'uikit-react'
+import { Button, Input, InputContainer } from 'uikit-react'
 import { addBlog } from '../../api/blogHandler'
 import { Alerts } from '../Utils/alert'
 
 export default class TextEditor extends Component {
     constructor(props) {
         super(props)
-        this.state = { text: '', msg: '', loading: false }
+        this.state = { text: '', msg: '', loading: false, title: null }
         this.handleChange = this.handleChange.bind(this)
     }
 
@@ -19,6 +19,7 @@ export default class TextEditor extends Component {
     onSubmit = async (e) => {
         e.preventDefault()
         const body = {
+            title: this.state.title,
             data: this.state.text,
             categories: [],
         }
@@ -54,6 +55,7 @@ export default class TextEditor extends Component {
         }
         return this.state.loading ? <div uk-spinner></div> :
             <>
+                <Input className="uk-input uk-margin-bottom" name="title" value={this.state.title} placeholder="Title" onChange={(e) => { this.setState({ title: e.target.value }); console.log(this.state) }}></Input>
                 <ReactQuill value={this.state.text} preserveWhiteSpace={true} modules={toolbar}
                     onChange={this.handleChange} theme="snow" className="react-quill" />
                 <div className="uk-button-group uk-margin">

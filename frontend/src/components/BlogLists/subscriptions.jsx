@@ -27,7 +27,7 @@ export default class Subscriptions extends Component {
     render() {
         return (
             <div className="uk-margin-small-bottom uk-margin-auto-top">
-                <div className="uk-h1 uk-text-left">Explore</div>
+                <div className="uk-h1 uk-text-left">Subscriptions</div>
                 {this.state.loading ? <div uk-spinner></div> : <CardSwiper list={this.state.blogs} />}
             </div>
         )

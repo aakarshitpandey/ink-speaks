@@ -11,7 +11,7 @@ class Landing extends Component {
                 <div id="trending-container" className="uk-section uk-section-default col-md-6 col-lg-6 col-sm-12 post-container">
                     <h1 className="uk-text-center"> Trending</h1>
                     <div className="uk-container uk-container-small">
-                        <Posts />
+                        <Posts general={true} />
                     </div>
                 </div>
                 {/* </div> */}

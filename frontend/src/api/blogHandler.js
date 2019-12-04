@@ -2,6 +2,17 @@ import api, { getToken } from './config'
 import * as routes from './routes'
 import { getUser } from './auth'
 
+export const getUserByID = async () => {
+    const user = getUser()
+    console.log(user)
+    try {
+        const res = await api.get(`${routes.userProfile}${user.id}`)
+        return Promise.resolve(res)
+    } catch (e) {
+        return Promise.reject({ msg: e })
+    }
+}
+
 export const addBlog = async (body) => {
     try {
         console.log(`Making axios post request`)

@@ -1,5 +1,6 @@
 import React from 'react'
 import { register } from '../../api/auth'
+import { validateEmail } from '../Utils/constants'
 
 const RESET_STATE = {
     firstName: '',
@@ -23,6 +24,10 @@ export default class SignUp extends React.Component {
     onSubmit = async (event) => {
         event.preventDefault();
         const { firstName, lastName, email, password } = this.state
+        if (!validateEmail(email)) {
+            this.setState({ loading: false, message: 'Invalid Email' })
+            return
+        }
         this.setState({ loading: true })
         const data = { firstName, lastName, email, password }
         register(data)

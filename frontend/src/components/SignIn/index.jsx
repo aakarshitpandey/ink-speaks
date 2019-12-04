@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { login } from '../../api/auth'
 import { Redirect } from "react-router-dom";
 import * as ROUTES from '../../routes/index'
+import { validateEmail } from '../Utils/constants';
 
 export default class SignIn extends Component {
     constructor(props) {
@@ -23,6 +24,11 @@ export default class SignIn extends Component {
         event.preventDefault()
         this.setState({ loading: true })
         const { email, password } = this.state
+        if (!validateEmail(email)) {
+            this.setState({ loading: false })
+            alert(`Please enter a valid email`)
+            return
+        }
         try {
             const data = { email, password }
             const response = await login(data)

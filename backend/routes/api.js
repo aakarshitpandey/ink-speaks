@@ -8,12 +8,33 @@ const Blog = require('../models/blog')
 
 const router = express.Router()
 
-const validateRegisterInput = require('../api/auth/validator')
-const validateLoginInput = require('../api/auth/validator')
+// const validateRegisterInput = require('../api/auth/validator')
+// const validateLoginInput = require('../api/auth/validator')
 
 router.get('/', (req, res, next) => {
-  User.find().then((users) => {
-    res.status(200).json(users)
+  if (req.body.id) {
+    console.log(req.body.id)
+    User.findOne({ _id: `${req.body.id}` }).then((user) => {
+      res.status(200).json(user)
+    })
+  } else {
+    console.log(req.body.id)
+    User.find().then((users) => {
+      res.status(200).json(users)
+    })
+  }
+})
+
+router.get('/getBlogs/', (req, res) => {
+  Blog.find({}).then((blogs) => { res.status(200).send({ blog: blogs }) })
+})
+
+router.get('/userProfile/:id', (req, res, next) => {
+  console.log(req.params)
+  User.findOne({ _id: `${req.params.id}` }).then((user) => {
+    res.status(200).json(user)
+  }).catch((e) => {
+    res.status(400).json({ err: e })
   })
 })
 
@@ -62,10 +83,10 @@ router.post('/register', (req, res) => {
 //login
 router.post('/login', (req, res) => {
 
-  //check for validation
+  // check for validation
   // const { isValid, error } = validateLoginInput(req.body)
   // if (!isValid) {
-  //     res.status(400).json(error)
+  //   res.status(400).json(error)
   // }
 
   const email = req.body.email
@@ -123,7 +144,8 @@ router.post('/compose', authenticate, (req, res, next) => {
       authorName: `${userInfo.firstName} ${userInfo.lastName}`,
       data: req.body.data,
       categories: req.body.categories,
-      isPosted: req.body.isPosted
+      isPosted: req.body.isPosted,
+      title: req.body.title
     })
     newBlog.save()
       .then((blog) => {
@@ -147,7 +169,7 @@ router.post('/compose', authenticate, (req, res, next) => {
 })
 
 //return all the blog posts
-router.get('/blogs', authenticate, (req, res) => {
+router.get('/blogs', (req, res) => {
   Blog.find({})
     .then((blogs) => {
       if (req.body.sendAll === true || blogs.length <= 20) {

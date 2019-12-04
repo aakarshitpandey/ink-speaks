@@ -1,22 +1,39 @@
 import React from 'react'
 import Post from './post'
+import { getBlogList, getBlogListFromCreator } from '../../api/blogHandler'
 
 export default class Posts extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            recentPosts: [1, 1, 1, 1]
+            recentPosts: [],
+            loading: false
         }
     }
 
-    componentDidMount() {
-        //Fetch the data and update the state
+    async componentDidMount() {
+        this.setState({ loading: true })
+        if (this.props.general) {
+            try {
+                const res = await getBlogList({ sendAll: false })
+                this.setState({ recentPosts: res.data.blogs.slice(0, 5), loading: false })
+            } catch (err) {
+                this.setState({ loading: false })
+            }
+        } else {
+            try {
+                const res = await getBlogListFromCreator({ sendAll: false })
+                this.setState({ recentPosts: res.data.blogs, loading: false })
+            } catch (err) {
+                this.setState({ loading: false })
+            }
+        }
     }
 
     render() {
         return <div>
             {this.state.recentPosts.map((post) => {
-                return <Post />
+                return <Post post={post} />
             })}
         </div>
     }

@@ -68,7 +68,7 @@ const NavNoAuth = (props) => (
 const NavAuth = (props) => (
     <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top" uk-navbar>
-            <Link to={ROUTES.landing} className="navbar-brand">Logo</Link>
+            <Link to={ROUTES.landing} className="navbar-brand">Ink-Speaks</Link>
             <button className="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -87,10 +87,10 @@ const NavAuth = (props) => (
 const LeftNav = () => (
     <ul className="navbar-nav mr-auto">
         <li className="nav-item item active uk-navbar-item">
-            <Link className="nav-a" to="#">Subscriptions<span className="sr-only">(current)</span></Link>
+            <Link className="nav-a" to={ROUTES.dashboard}>Dashboard<span className="sr-only">(current)</span></Link>
         </li>
         <li className="nav-item item active uk-navbar-item">
-            <Link className="nav-a" to="#">Categories<span className="sr-only">(current)</span></Link>
+            <Link className="nav-a" to={ROUTES.myaccount}>My Blogs<span className="sr-only">(current)</span></Link>
         </li>
     </ul>
 )
@@ -112,7 +112,7 @@ const RightNav = (props) => (
             <Link to={ROUTES.addArticle} className="">Add Blog</Link>
         </div>
         <div className="uk-navbar-item">
-            <Link to="#" className="">My Account</Link>
+            <Link to={ROUTES.myaccount} className="">My Account</Link>
         </div>
         <LogoutButton toggleAuth={props.toggleAuth} history={props.history} />
     </div>
