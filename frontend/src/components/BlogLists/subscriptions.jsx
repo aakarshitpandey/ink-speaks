@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { getBlogList } from '../../api/blogHandler'
+import { getBlogListSubscriptions } from '../../api/blogHandler'
 import CardSwiper from '../Utils/swiper';
 
-export default class Explore extends Component {
+export default class Subscriptions extends Component {
 
     constructor(props) {
         super(props)
@@ -15,8 +15,7 @@ export default class Explore extends Component {
     async componentDidMount() {
         this.setState({ loading: true })
         try {
-            // const res = await getBlogList({ sendAll: false })
-            //TODO
+            const res = await getBlogListSubscriptions()
             console.log(res)
             this.setState({ loading: false, blogs: res.data.blogs })
         } catch (err) {

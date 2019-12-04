@@ -34,6 +34,21 @@ export const getBlogList = async (body) => {
     }
 }
 
+export const getBlogListSubscriptions = async (body) => {
+    try {
+        const res = await api.get(routes.subscribedBlogs, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        })
+        console.log(res)
+        return Promise.resolve(res)
+    } catch (err) {
+        console.log(err)
+        return Promise.reject({ msg: err.msg })
+    }
+}
+
 export const getBlogListFromCreator = async (body) => {
     try {
         const res = await api.get(`${routes.blogs}${getUser().id}`, {

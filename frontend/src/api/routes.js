@@ -3,6 +3,7 @@ module.exports = {
     register: 'register/',
     compose: 'compose/',
     blogs: 'blogs/',
+    subscribedBlogs: 'blogs/subscriptions',
     blogpost: 'blogpost/',
     like: 'blogpost/likes/',
     subscribe: 'subscribe/'

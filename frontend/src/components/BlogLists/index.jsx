@@ -3,6 +3,7 @@ import 'swiper/css/swiper.css'
 import CardSwiper from '../Utils/swiper';
 import { Button } from 'uikit-react';
 import Explore from './explore';
+import Subscriptions from './subscriptions';
 
 export default class BlogList extends Component {
 
@@ -21,10 +22,7 @@ export default class BlogList extends Component {
             <>
                 <Explore />
                 <Button color="primary">See all</Button>
-                <div className="uk-margin-small-bottom">
-                    <div className="uk-h1 uk-text-left">Your Subscriptions</div>
-                    <CardSwiper list={this.state.blogs} />
-                </div>
+                <Subscriptions />
             </>
         )
     }

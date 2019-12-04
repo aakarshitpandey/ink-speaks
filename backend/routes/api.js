@@ -148,7 +148,6 @@ router.post('/compose', authenticate, (req, res, next) => {
 
 //return all the blog posts
 router.get('/blogs', authenticate, (req, res) => {
-  console.log('Done with authentication')
   Blog.find({})
     .then((blogs) => {
       if (req.body.sendAll === true || blogs.length <= 20) {
@@ -177,6 +176,23 @@ router.get('/blogs/:id', authenticate, (req, res) => {
       console.log(err)
       res.status(400).json({ msg: `Error occured` })
     })
+})
+
+router.get('/blogs/subscriptions', authenticate, (req, res) => {
+  const { following } = res.userInfo
+  let blogArr = []
+  following.map((creatorID) => {
+    if (blogArr.length < 50) {
+      Blog.find({ authorID: `${creatorID}` })
+        .then((blogs) => {
+          blogArr.push(blogs)
+        })
+        .catch(e => {
+          res.status(200).json({ blogs: blogArr, msg: `Error occured` })
+        })
+    }
+  })
+  res.status(200).send({ blogs: blogArr });
 })
 
 //increase the numebr of likes
@@ -253,6 +269,7 @@ async function authenticate(req, res, next) {
     }
 
     if (!user) {
+      console.log(`invalid token`)
       res.status(404).json({ msg: 'Invalid Token.' })
       return
     }
