@@ -82,7 +82,7 @@ export const likeBlog = async (id) => {
 
 export const subscribe = async (authorID) => {
     try {
-        const res = await api.post(`${routes.subscribe}${id}`, { authorID: authorID }, {
+        const res = await api.post(`${routes.subscribe}`, { authorID: authorID }, {
             headers: {
                 Authorization: `Bearer ${getToken()}`
             }

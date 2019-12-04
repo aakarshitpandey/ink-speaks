@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { getBlogById, likeBlog } from '../../api/blogHandler'
 import { Article, Badge, Icon } from 'uikit-react'
+import { getUser } from '../../api/auth'
 
 export default class Blog extends Component {
     static propTypes = {
