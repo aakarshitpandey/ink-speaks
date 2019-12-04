@@ -31,10 +31,6 @@
   padding-left: 30px;
 }
 
-.uk-button:hover {
-  color: bisque;
-}
-
 .uk-button:disabled {
   background: rgba(99, 10, 10, 0.753) !important
 }
