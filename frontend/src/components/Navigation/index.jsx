@@ -38,7 +38,7 @@ class NavBar extends Component {
 const NavNoAuth = (props) => (
     <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top" uk-navbar>
-            <div className="navbar-brand">Logo</div>
+            <div className="navbar-brand">Ink-Speaks</div>
             <button className="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>

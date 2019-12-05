@@ -12,13 +12,13 @@ const apiRouter = require('./routes/api');
 const app = express();
 
 //connection to MongoDB
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('connected to user database'))
 
 //connection to MongoDB
-mongoose.connect(process.env.BLOG_DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 const blogDB = mongoose.connection
 blogDB.on('error', (error) => console.error(error))
 blogDB.once('open', () => console.log('connected to blog database'))
