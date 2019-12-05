@@ -5,7 +5,7 @@
   "main": "./backend/bin/www",
   "scripts": {
     "test": "npm start",
-    "dev": "cd ./backend && npm run buildStart"
+    "start": "cd ./backend && npm run buildStart"
   },
   "repository": {
     "type": "git",
