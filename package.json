@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm start",
     "start": "cd ./frontend && yarn build && cd ../backend && npm run buildStart",
-    "install": "npm i && cd ./frontend && npm install && cd ../backend && npm install"
+    "install": "cd ./frontend && npm install && cd ../backend && npm install && cd ../"
   },
   "repository": {
     "type": "git",
