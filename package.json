@@ -1,0 +1,20 @@
+{
+  "name": "ink-speaks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./backend/bin/www",
+  "scripts": {
+    "test": "npm start",
+    "dev": "cd ./backend && npm run buildStart"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aakarshitpandey/ink-speaks.git"
+  },
+  "author": "Aakarshit Pandey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aakarshitpandey/ink-speaks/issues"
+  },
+  "homepage": "https://github.com/aakarshitpandey/ink-speaks#readme"
+}
