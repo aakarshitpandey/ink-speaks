@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/aakarshitpandey/ink-speaks/issues"
   },
-  "homepage": "https://github.com/aakarshitpandey/ink-speaks#readme"
+  "homepage": "https://github.com/aakarshitpandey/ink-speaks#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
