@@ -60,9 +60,9 @@ export default class Blog extends Component {
                                 <div dangerouslySetInnerHTML={{ __html: blog.data }} />
                             </Article>
                             <div className="uk-flex uk-flex-inline">
-                                <div className="uk-button-secondary uk-button uk-margin uk-margin-left" style={{ marginTop: '20px' }} onClick={this.onLike}>Like<span className="uk-badge uk-margin-small"> {likes}</span></div>
-                                <div className="share uk-link uk-button uk-button-secondary uk-margin uk-margin-left">Share</div>
-                                <div className="Subscribe uk-button uk-button-danger uk-margin uk-margin-left">Subscribe</div>
+                                <div className="uk-button-secondary uk-button uk-margin" style={{ marginTop: '20px' }} onClick={this.onLike}>Like<span className="uk-badge uk-margin-small"> {likes}</span></div>
+                                <div className="share uk-link uk-button uk-button-secondary uk-margin">Share</div>
+                                <div className="Subscribe uk-button uk-button-danger uk-margin">Subscribe</div>
                             </div>
                         </div>
                 }
