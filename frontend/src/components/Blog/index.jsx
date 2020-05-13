@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { getBlogById, likeBlog } from '../../api/blogHandler'
-import { loggedIn } from '../../api/auth'
 import { Article, Badge, Icon } from 'uikit-react'
 import { getUser } from '../../api/auth'
-import * as ROUTES from '../../routes/index'
-import { Alerts } from '../Utils/alert'
 
 export default class Blog extends Component {
     static propTypes = {
@@ -20,19 +17,11 @@ export default class Blog extends Component {
             msg: null,
             id: null,
             likes: 0,
-            user: null,
-            isLoggedIn: true,
         }
     }
 
     async componentDidMount() {
-        if (loggedIn()) {
-            const user = getUser()
-            this.setState({ user: user })
-        } else {
-            this.setState({ isLoggedIn: false })
-            return
-        }
+        this.setState({ loading: true })
         try {
             const res = await getBlogById(this.props.match.params.id)
             if (res.data.blog) {
@@ -62,24 +51,22 @@ export default class Blog extends Component {
     render() {
         const { blog, likes } = this.state
         return (
-            this.state.isLoggedIn ?
-                <>
-                    {
-                        this.state.loading ?
-                            <div>Loading...</div> :
-                            <div className="uk-margin-large-top uk-background-muted uk-box-shadow-small uk-margin-auto uk-padding-small">
-                                <Article title={blog.title} meta={`Written by ${blog.authorName}`}>
-                                    <div dangerouslySetInnerHTML={{ __html: blog.data }} />
-                                </Article>
-                                <div className="uk-flex uk-flex-inline">
-                                    <div className="uk-button-secondary uk-button uk-margin" style={{ marginTop: '20px' }} onClick={this.onLike}>Like<span className="uk-badge uk-margin-small"> {likes}</span></div>
-                                    <div className="share uk-link uk-button uk-button-secondary uk-margin">Share</div>
-                                    <div className="Subscribe uk-button uk-button-danger uk-margin">Subscribe</div>
-                                </div>
+            <>
+                {
+                    this.state.loading ?
+                        <div>Loading...</div> :
+                        <div className="uk-margin-large-top uk-background-muted uk-box-shadow-small uk-margin-auto uk-padding-small">
+                            <Article title={blog.title} meta={`Written by ${blog.authorName}`}>
+                                <div dangerouslySetInnerHTML={{ __html: blog.data }} />
+                            </Article>
+                            <div className="uk-flex uk-flex-inline">
+                                <div className="uk-button-secondary uk-button uk-margin uk-margin-left" style={{ marginTop: '20px' }} onClick={this.onLike}>Like<span className="uk-badge uk-margin-small"> {likes}</span></div>
+                                <div className="share uk-link uk-button uk-button-secondary uk-margin uk-margin-left">Share</div>
+                                <div className="Subscribe uk-button uk-button-danger uk-margin uk-margin-left">Subscribe</div>
                             </div>
-                    }
-                </> :
-                <Alerts message="You are not logged in" redirectTo={ROUTES.landing} />
+                        </div>
+                }
+            </>
         )
     }
 }

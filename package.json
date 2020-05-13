@@ -5,7 +5,7 @@
   "main": "./backend/bin/www",
   "scripts": {
     "test": "npm start",
-    "start": "cd ./backend && npm start && cd ../",
+    "start": "cd ./frontend && yarn build && cd ../backend && npm run buildStart",
     "install": "cd ./frontend && npm install && cd ../backend && npm install && cd ../"
   },
   "repository": {
@@ -17,8 +17,5 @@
   "bugs": {
     "url": "https://github.com/aakarshitpandey/ink-speaks/issues"
   },
-  "homepage": "https://github.com/aakarshitpandey/ink-speaks#readme",
-  "dependencies": {
-    "dotenv": "^8.2.0"
-  }
+  "homepage": "https://github.com/aakarshitpandey/ink-speaks#readme"
 }
