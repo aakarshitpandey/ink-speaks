@@ -5,8 +5,7 @@
   "main": "./backend/bin/www",
   "scripts": {
     "test": "npm start",
-    "starting": "cd ./backend && npm start && cd ../",
-    "start": "npm run buildStart --prefix=backend",
+    "start": "cd ./frontend && yarn build && cd ../backend && npm start && cd ../",
     "install": "cd ./frontend && npm install && cd ../backend && npm install && cd ../"
   },
   "repository": {
