@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const passport = require('passport')
 const Blog = require('../models/blog')
+var multer = require('multer')
+var upload = multer({ limits: { fieldSize: 1024 * 1024 * 15 } })
 
 const router = express.Router()
 
@@ -135,10 +137,10 @@ router.post('/login', (req, res) => {
   })
 })
 
-router.post('/compose', authenticate, (req, res, next) => {
+router.post('/compose', authenticate, upload.none(), (req, res, next) => {
   console.log(`Blog Post request recieved`)
   if (req.userInfo._id) {
-    const { userInfo } = res
+    const { userInfo } = req
     const newBlog = new Blog({
       authorID: req.userInfo._id,
       authorName: `${userInfo.firstName} ${userInfo.lastName}`,

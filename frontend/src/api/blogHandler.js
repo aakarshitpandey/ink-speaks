@@ -14,10 +14,15 @@ export const getUserByID = async () => {
 }
 
 export const addBlog = async (body) => {
+    const formData = new FormData()
+    formData.append("title", body.title)
+    formData.append("data", body.data)
+    formData.append("categories", body.categories)
+    console.log(body.data)
     try {
-        console.log(`Making axios post request`)
-        const res = await api.post(routes.compose, { ...body }, {
+        const res = await api.post(routes.compose, formData/*{ ...body }*/, {
             headers: {
+                'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${getToken()}`
             }
         })
