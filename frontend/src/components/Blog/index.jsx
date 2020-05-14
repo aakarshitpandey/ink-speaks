@@ -42,7 +42,11 @@ export default class Blog extends Component {
             if (res.data.blog) {
                 this.setState({ loading: false, blog: res.data.blog })
                 this.setState({ likes: this.state.blog.reactions.likes })
-                this.setState({ likedIcon: Liked })
+                if (res.data.blog.reactions) {
+                    if (res.data.blog.reactions.likedUsers.indexOf(this.state.user.id) >= 0) {
+                        this.setState({ likedIcon: Liked, isLiked: true })
+                    }
+                }
             } else {
                 this.setState({ loading: false, msg: `Error occured...try again!` })
             }
