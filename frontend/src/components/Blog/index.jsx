@@ -30,6 +30,8 @@ export default class Blog extends Component {
     }
 
     async componentDidMount() {
+        this.setState({ loading: true })
+        console.log("loading")
         if (loggedIn()) {
             const user = getUser()
             this.setState({ user: user })
@@ -81,7 +83,7 @@ export default class Blog extends Component {
                 <>
                     {
                         this.state.loading ?
-                            <div>Loading...</div> :
+                            <div className="loading-spinner"><div uk-spinner="ratio: 3"></div></div> :
                             <div className="uk-margin-large-top uk-background-muted uk-box-shadow-small uk-margin-auto uk-padding-small">
                                 <Article title={blog.title} meta={`Written by ${blog.authorName}`}>
                                     <div dangerouslySetInnerHTML={{ __html: blog.data }} />

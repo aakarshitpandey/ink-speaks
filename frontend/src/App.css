@@ -123,6 +123,18 @@ nav .item:hover::before {
   margin-right: 10px;
 }
 
+.loading-spinner {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+
+.loading-spinner-component {
+  position: relative;
+  vertical-align: middle;
+  align-items: center;
+}
+
 @media(max-width: 550px) {
   .reaction {
     padding: 7px;
