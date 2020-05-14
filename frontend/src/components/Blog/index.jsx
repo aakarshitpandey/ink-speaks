@@ -83,7 +83,7 @@ export default class Blog extends Component {
                                 </div>
                             </div>
                     }
-                </> : <></>
+                </> : <Alerts message="You are not logged in" redirectTo={ROUTES.landing} />
         )
     }
 }
