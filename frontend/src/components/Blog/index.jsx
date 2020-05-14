@@ -3,6 +3,10 @@ import PropTypes from 'prop-types'
 import { getBlogById, likeBlog } from '../../api/blogHandler'
 import { Article, Badge, Icon } from 'uikit-react'
 import { getUser } from '../../api/auth'
+import * as ROUTES from '../../routes/index'
+import { Alerts } from '../Utils/alert'
+import Liked from '../../liked.png'
+import notLiked from '../../not-liked.png'
 
 export default class Blog extends Component {
     static propTypes = {
@@ -17,6 +21,10 @@ export default class Blog extends Component {
             msg: null,
             id: null,
             likes: 0,
+            user: null,
+            isLoggedIn: true,
+            likedIcon: notLiked,
+            isLiked: false
         }
     }
 
@@ -27,6 +35,7 @@ export default class Blog extends Component {
             if (res.data.blog) {
                 this.setState({ loading: false, blog: res.data.blog })
                 this.setState({ likes: this.state.blog.reactions.likes })
+                this.setState({ likedIcon: Liked })
             } else {
                 this.setState({ loading: false, msg: `Error occured...try again!` })
             }
@@ -37,10 +46,16 @@ export default class Blog extends Component {
 
     onLike = async () => {
         try {
-            const res = await likeBlog(this.props.match.params.id)
+            let res
+            if (this.state.isLiked) {
+                res = await likeBlog(this.props.match.params.id, "unlike")
+            } else {
+                res = await likeBlog(this.props.match.params.id)
+            }
             if (res.data.blog) {
                 console.log(`updating state`)
-                this.setState({ likes: res.data.blog.reactions.likes })
+                let image = this.state.isLiked ? notLiked : Liked
+                this.setState({ likes: res.data.blog.reactions.likes, likedIcon: image, isLiked: !this.state.isLiked })
             }
         } catch (err) {
             console.log(err)
@@ -51,22 +66,24 @@ export default class Blog extends Component {
     render() {
         const { blog, likes } = this.state
         return (
-            <>
-                {
-                    this.state.loading ?
-                        <div>Loading...</div> :
-                        <div className="uk-margin-large-top uk-background-muted uk-box-shadow-small uk-margin-auto uk-padding-small">
-                            <Article title={blog.title} meta={`Written by ${blog.authorName}`}>
-                                <div dangerouslySetInnerHTML={{ __html: blog.data }} />
-                            </Article>
-                            <div className="uk-flex uk-flex-inline">
-                                <div className="uk-button-secondary uk-button uk-margin uk-margin-left" style={{ marginTop: '20px' }} onClick={this.onLike}>Like<span className="uk-badge uk-margin-small"> {likes}</span></div>
-                                <div className="share uk-link uk-button uk-button-secondary uk-margin uk-margin-left">Share</div>
-                                <div className="Subscribe uk-button uk-button-danger uk-margin uk-margin-left">Subscribe</div>
+            this.state.isLoggedIn ?
+                <>
+                    {
+                        this.state.loading ?
+                            <div>Loading...</div> :
+                            <div className="uk-margin-large-top uk-background-muted uk-box-shadow-small uk-margin-auto uk-padding-small">
+                                <Article title={blog.title} meta={`Written by ${blog.authorName}`}>
+                                    <div dangerouslySetInnerHTML={{ __html: blog.data }} />
+                                </Article>
+                                <div className="uk-row">
+                                    <span className="uk-badge reaction-btn-list"> {likes} likes</span>
+                                    <img className="reaction reaction-icon" onClick={this.onLike} src={this.state.likedIcon} />
+                                    <div className="reaction uk-link uk-button uk-button-secondary uk-margin uk-margin-top reaction-btn-list">Share</div>
+                                    <div className="reaction uk-button uk-button-danger uk-margin reaction-btn-list">Subscribe</div>
+                                </div>
                             </div>
-                        </div>
-                }
-            </>
+                    }
+                </> : <></>
         )
     }
 }
