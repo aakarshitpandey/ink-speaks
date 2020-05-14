@@ -6,7 +6,7 @@ const User = require('../models/user')
 const passport = require('passport')
 const Blog = require('../models/blog')
 var multer = require('multer')
-var upload = multer({ limits: { fieldSize: 1024 * 1024 * 15 } })
+var upload = multer({ limits: { fieldSize: 1024 * 1024 * 1024 } })
 
 const router = express.Router()
 
