@@ -91,9 +91,12 @@ export const getBlogById = async (id) => {
     }
 }
 
-export const likeBlog = async (id) => {
+export const likeBlog = async (id, mode) => {
+    if (`${mode}`.localeCompare('unlike') !== 0) {
+        mode = "like"
+    }
     try {
-        const res = await api.get(`${routes.like}${id}`, {
+        const res = await api.get(`${routes.like}${id}?mode=${mode}`, {
             headers: {
                 Authorization: `Bearer ${getToken()}`
             }

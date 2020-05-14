@@ -219,9 +219,16 @@ router.get('/blogs/subscriptions', authenticate, (req, res) => {
 
 //increase the numebr of likes
 router.get('/blogpost/likes/:id', authenticate, (req, res) => {
+  let { mode } = req.query
+  console.log(mode)
+  let counter = 1
+  if (`${mode}`.localeCompare('unlike') === 0) {
+    counter = -1
+  }
+  console.log("Counter:", counter)
   Blog.findOne({ _id: `${req.params.id}` })
     .then((blog) => {
-      blog.reactions.likes += 1
+      blog.reactions.likes += counter
       if (isNaN(blog.reactions.views)) {
         blog.reactions.views = 1
       }
