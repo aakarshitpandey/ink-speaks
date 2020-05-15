@@ -33,7 +33,7 @@ class Landing extends Component {
                         <span className="span-intro"> Speaks</span>
                         <PenSVG />
                     </div>
-                    {/* <WordOfTheDay /> */}
+                    <WordOfTheDay />
                 </section>
                 <div className="uk-grid uk-padding-remove" uk-height-match uk-grid>
                     {/* <div className="uk-width-1-2@m uk-flex-first"> */}

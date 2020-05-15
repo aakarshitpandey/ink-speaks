@@ -174,3 +174,18 @@ nav .item:hover::before {
     margin-right: 3px;
   }
 }
+
+.wrd-otd {
+  position: fixed;
+  z-index: 999;
+  border-radius: 30px;
+  border-color: #09d3ac;
+  width: 25% !important;
+  margin: 5px;
+  bottom: 2%;
+  right: 2%;
+}
+
+.frijole {
+  font-family: 'Frijole', cursive;
+}
