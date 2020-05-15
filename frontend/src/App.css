@@ -226,3 +226,22 @@ nav .item:hover::before {
 .src-code-pro {
   font-family: 'Source Code Pro', monospace;
 }
+
+.delete-msg p {
+  color: rgba(99, 10, 10, 0.753);
+  font-weight: 700;
+}
+
+.delete-msg button {
+  border:1px 1px 1px 1px solid rgba(99, 10, 10, 0.753);
+  margin-right: 4px;
+  padding: 5px;
+}
+
+.yes-delete:hover {
+  background: rgba(99, 10, 10, 0.5);
+}
+
+.no-delete:hover {
+  background: rgba(255, 230, 0, 0.2);
+}

@@ -8,5 +8,6 @@ module.exports = {
     like: 'blogpost/likes/',
     subscribe: 'subscribe/',
     userProfile: 'userProfile/',
-    blogContent: 'blogContent/'
+    blogContent: 'blogContent/',
+    blogDelete: 'blog/',
 }

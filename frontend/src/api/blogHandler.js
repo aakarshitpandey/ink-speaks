@@ -112,6 +112,23 @@ export const getBlogContentsById = (id) => {
     })
 }
 
+export const deleteBlog = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await api.delete(`${routes.blogDelete}${id}`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            })
+            console.log(res.data.data)
+            return resolve(res.data.data)
+        } catch (err) {
+            console.log(err)
+            return reject({ msg: err })
+        }
+    })
+}
+
 export const likeBlog = async (id, mode) => {
     if (`${mode}`.localeCompare('unlike') !== 0) {
         mode = "like"

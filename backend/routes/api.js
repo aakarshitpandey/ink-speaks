@@ -320,6 +320,36 @@ router.get('/blogpost/:id', authenticate, (req, res) => {
     })
 })
 
+router.delete('/blog/:id', authenticate, async (req, res) => {
+  const { id } = req.params
+  try {
+    const blog = await Blog.findById(id)
+    const authorID = blog.authorID
+    console.log(blog)
+    if (!blog) {
+      return res.status(404).json({ msg: 'Blog not found' })
+    }
+    try {
+      console.log('deleting: ', blog.data)
+      const ret = await Content.deleteOne({ _id: blog.data })
+    } catch (e) {
+      console.log('Could not delete the content')
+    } //end try-catch
+    await Blog.deleteOne({ _id: id })
+    const author = await User.findOne({ _id: authorID })
+    for (let i = 0; i < author.blogs.length; i++) {
+      if (`${author.blogs[i]}`.localeCompare(`${id}`) === 0) {
+        author.blogs.splice(i, 1)
+        break
+      }
+    }
+    await User.updateOne({ _id: authorID }, { blogs: author.blogs })
+    res.status(200).json({ msg: 'The blog was successfully deleted' })
+  } catch (e) {
+    res.status(400).json({ msg: e.message })
+  } //end try-catch
+})
+
 router.post('/subscribe/', authenticate, (req, res) => {
   User.findOne({ _id: `${req.body.authorID}` })
     .then(async (user) => {
