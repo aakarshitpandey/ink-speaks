@@ -179,11 +179,16 @@ nav .item:hover::before {
   position: fixed;
   z-index: 999;
   border-radius: 30px;
-  border-color: #09d3ac;
   width: 25% !important;
   margin: 5px;
   bottom: 2%;
   right: 2%;
+}
+
+@media(max-width: 600px) {
+  .wrd-otd {
+    width: 100% !important;
+  }
 }
 
 .frijole {

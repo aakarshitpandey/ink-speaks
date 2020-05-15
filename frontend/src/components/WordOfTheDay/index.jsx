@@ -28,12 +28,10 @@ export default class WordOfTheDay extends Component {
     )
 
     render() {
+        const opts = window.innerWidth > 600 ? "0" : "false"
         return (
             <div className="wrd-otd">
-                {/* <div class="uk-card uk-card-default uk-card-body wrd-otd" uk-sticky="offset:100, bottom: #offset">
-                    Stick to the top
-                </div> */}
-                <Accordion options="multiple: true; active: 0">
+                <Accordion options={`multiple: true; active: ${opts}`}>
                     <AccordionItem title="Word of The Day" content={this.getWord()} />
                 </Accordion>
             </div>
