@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Livvic:ital,wght@1,500&family=Uncial+Antiqua&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Frijole&family=Great+Vibes&family=Loved+by+the+King&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Frijole&family=Great+Vibes&family=Loved+by+the+King&family=Source+Code+Pro:wght@500&display=swap');
 
 * {
-  font-family: 'Livvic', sans-serif;
+  /* font-family: 'Livvic', sans-serif; */
+  font-family: 'Source Code Pro', monospace;
 }
 
 .intro {
@@ -32,12 +33,14 @@ nav {
 }
 
 nav a {
-  font-family: 'Uncial Antiqua', cursive;
+  /* font-family: 'Uncial Antiqua', cursive; */
+  font-family: 'Source Code Pro', monospace;
+  color: black;
 }
 
 nav a:hover {
   text-decoration: none;
-  color: #09d3ac;
+  color: grey;
 }
 
 .App {
@@ -197,13 +200,29 @@ nav .item:hover::before {
 
 .bg-faded {
   /* background: #b1afaf; */
-  background: linear-gradient(to bottom, white, #b1afaf);
+  background: linear-gradient(to bottom, white, #c5c5c5);
 }
 
 .full-height {
   min-height: 100vh;
 }
 
+.navbar-brand {
+  font-size: 2rem;
+}
+
 .frijole {
   font-family: 'Frijole', cursive;
+}
+
+.livvic {
+  font-family: 'Livvic', sans-serif;
+}
+
+.loved-by-king {
+  font-family: 'Loved by the King', cursive;
+}
+
+.src-code-pro {
+  font-family: 'Source Code Pro', monospace;
 }
