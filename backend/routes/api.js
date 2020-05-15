@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const passport = require('passport')
 const Blog = require('../models/blog')
+const Content = require('../models/content')
 var multer = require('multer')
 var upload = multer({ limits: { fieldSize: 1024 * 1024 * 1024 } })
 
@@ -137,36 +138,53 @@ router.post('/login', (req, res) => {
   })
 })
 
-router.post('/compose', authenticate, upload.none(), (req, res, next) => {
+router.post('/compose', authenticate, upload.none(), async (req, res, next) => {
   console.log(`Blog Post request recieved`)
   if (req.userInfo._id) {
     const { userInfo } = req
-    const newBlog = new Blog({
-      authorID: req.userInfo._id,
-      authorName: `${userInfo.firstName} ${userInfo.lastName}`,
-      data: req.body.data,
-      categories: req.body.categories,
-      isPosted: req.body.isPosted,
-      title: req.body.title
-    })
-    newBlog.save()
-      .then((blog) => {
-        try {
-          updateUser(userInfo._id, { blogs: [...(userInfo.blogs), blog._id] })
-            .then((user) => res.status(200).json({ blog: blog, msg: 'The blog has been saved' }))
-            .catch((err) => {
-              console.log(err)
-              res.status(400).json({ msg: 'The userDB could not be updated' })
-            })
-        } catch (err) {
-          console.log(err)
-          res.status(400).json({ msg: 'The userDB could not be updated' })
-        }
+    const content = new Content({ data: req.body.data })
+    try {
+      const savedContent = await content.save()
+      const newBlog = new Blog({
+        authorID: req.userInfo._id,
+        authorName: `${userInfo.firstName} ${userInfo.lastName}`,
+        data: savedContent._id,
+        categories: req.body.categories,
+        isPosted: req.body.isPosted,
+        title: req.body.title
       })
-      .catch(err => {
-        console.log(err);
-        res.status(400).json({ msg: "Blog couldn't be saved!" });
-      })
+      newBlog.save()
+        .then((blog) => {
+          try {
+            updateUser(userInfo._id, { blogs: [...(userInfo.blogs), blog._id] })
+              .then((user) => res.status(200).json({ blog: blog, msg: 'The blog has been saved' }))
+              .catch((err) => {
+                console.log(err)
+                res.status(400).json({ msg: 'The userDB could not be updated' })
+              })
+          } catch (err) {
+            console.log(err)
+            res.status(400).json({ msg: 'The userDB could not be updated' })
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(400).json({ msg: "Blog couldn't be saved!" });
+        })
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ msg: "Blog couldn't be saved!" });
+    }
+  }
+})
+
+router.get('/blogContent/:id', async (req, res) => {
+  try {
+    const content = await Content.findById(req.params.id)
+    res.status(200).json({ data: content })
+  } catch (e) {
+    console.log(e.message)
+    res.status(404).json({ msg: e.message })
   }
 })
 

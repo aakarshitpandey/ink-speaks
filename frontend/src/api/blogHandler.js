@@ -96,6 +96,22 @@ export const getBlogById = async (id) => {
     }
 }
 
+export const getBlogContentsById = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await api.get(`${routes.blogContent}${id}`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            })
+            return resolve(res.data.data)
+        } catch (err) {
+            console.log(err)
+            return reject({ msg: err })
+        }
+    })
+}
+
 export const likeBlog = async (id, mode) => {
     if (`${mode}`.localeCompare('unlike') !== 0) {
         mode = "like"

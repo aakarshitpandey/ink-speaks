@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { getBlogById, likeBlog } from '../../api/blogHandler'
+import { getBlogById, likeBlog, getBlogContentsById } from '../../api/blogHandler'
 import { loggedIn } from '../../api/auth'
-import { Article, Badge, Icon } from 'uikit-react'
+import { Article } from 'uikit-react'
 import { getUser } from '../../api/auth'
 import * as ROUTES from '../../routes/index'
 import { Alerts } from '../Utils/alert'
 import Liked from '../../liked.png'
 import notLiked from '../../not-liked.png'
+import Loading from '../Utils/loading'
+
 
 export default class Blog extends Component {
     static propTypes = {
@@ -19,13 +21,15 @@ export default class Blog extends Component {
         this.state = {
             blog: {},
             loading: false,
+            loadingBlogContent: false,
             msg: null,
             id: null,
             likes: 0,
             user: null,
             isLoggedIn: true,
             likedIcon: notLiked,
-            isLiked: false
+            isLiked: false,
+            blogContent: '',
         }
     }
 
@@ -49,6 +53,9 @@ export default class Blog extends Component {
                         this.setState({ likedIcon: Liked, isLiked: true })
                     }
                 }
+                this.setState({ loadingBlogContent: true })
+                const ret = await getBlogContentsById(res.data.blog.data)
+                this.setState({ blogContent: ret.data, loadingBlogContent: false })
             } else {
                 this.setState({ loading: false, msg: `Error occured...try again!` })
             }
@@ -86,7 +93,10 @@ export default class Blog extends Component {
                             <div className="loading-spinner"><div uk-spinner="ratio: 3"></div></div> :
                             <div className="uk-margin-large-top uk-background-muted uk-box-shadow-small uk-margin-auto uk-padding-small">
                                 <Article title={blog.title} meta={`Written by ${blog.authorName}`}>
-                                    <div dangerouslySetInnerHTML={{ __html: blog.data }} />
+                                    {this.state.loadingBlogContent ?
+                                        <Loading /> :
+                                        <div dangerouslySetInnerHTML={{ __html: this.state.blogContent }} />
+                                    }
                                 </Article>
                                 <div className="uk-row">
                                     <span className="uk-badge reaction-btn-list"> {likes} likes</span>

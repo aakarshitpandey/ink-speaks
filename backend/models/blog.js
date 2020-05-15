@@ -15,8 +15,9 @@ const blogSchema = new mongoose.Schema({
         default: 'No title'
     },
     data: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
+        ref: 'BlogContent'
     },
     reactions: {
         type: Object,
