@@ -7,5 +7,6 @@ module.exports = {
     blogpost: 'blogpost/',
     like: 'blogpost/likes/',
     subscribe: 'subscribe/',
-    userProfile: 'userProfile/'
+    userProfile: 'userProfile/',
+    blogContent: 'blogContent/'
 }
