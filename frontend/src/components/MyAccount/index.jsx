@@ -34,7 +34,10 @@ class UserData extends Component {
     render() {
         const { user } = this.state
         return (
-            <>
+            <div className="bg-faded full-height">
+                <br />
+                <br />
+                <br />
                 < div className="uk-section uk-card-body" >
                     {
                         this.state.loading ? <div>Loading...</div> :
@@ -49,7 +52,7 @@ class UserData extends Component {
                 <div className="uk-padding-large">
                     <Posts general={false} />
                 </div>
-            </>
+            </div>
 
         )
     }

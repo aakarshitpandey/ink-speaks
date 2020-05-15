@@ -30,12 +30,24 @@ export default class Blog extends Component {
 
     async componentDidMount() {
         this.setState({ loading: true })
+        console.log("loading")
+        if (loggedIn()) {
+            const user = getUser()
+            this.setState({ user: user })
+        } else {
+            this.setState({ isLoggedIn: false })
+            return
+        }
         try {
             const res = await getBlogById(this.props.match.params.id)
             if (res.data.blog) {
                 this.setState({ loading: false, blog: res.data.blog })
                 this.setState({ likes: this.state.blog.reactions.likes })
-                this.setState({ likedIcon: Liked })
+                if (res.data.blog.reactions) {
+                    if (res.data.blog.reactions.likedUsers.indexOf(this.state.user.id) >= 0) {
+                        this.setState({ likedIcon: Liked, isLiked: true })
+                    }
+                }
             } else {
                 this.setState({ loading: false, msg: `Error occured...try again!` })
             }
@@ -70,7 +82,7 @@ export default class Blog extends Component {
                 <>
                     {
                         this.state.loading ?
-                            <div>Loading...</div> :
+                            <div className="loading-spinner"><div uk-spinner="ratio: 3"></div></div> :
                             <div className="uk-margin-large-top uk-background-muted uk-box-shadow-small uk-margin-auto uk-padding-small">
                                 <Article title={blog.title} meta={`Written by ${blog.authorName}`}>
                                     <div dangerouslySetInnerHTML={{ __html: blog.data }} />

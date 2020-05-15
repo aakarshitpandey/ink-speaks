@@ -27,7 +27,9 @@ export default class Dashboard extends Component {
         return (
             this.state.isLoggedIn ?
                 <div className="uk-card-body">
-                    <div className="uk-text-right uk-h4">Hi there {this.state.user.firstName}!</div>
+                    <br />
+                    <br />
+                    <div className="uk-text-right uk-h4 livvic">Hi there {this.state.user.firstName}!</div>
                     <BlogList />
                 </div> :
                 <Alerts message="You are not logged in" redirectTo={ROUTES.landing} />

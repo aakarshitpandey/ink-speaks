@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ForgotPassword } from '../SignUp/forgotPassword'
-import { Link } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom'
 import SignIn from '../SignIn'
 import { getUser } from '../../api/auth'
 import * as ROUTES from '../../routes/index'
@@ -37,18 +37,18 @@ class NavBar extends Component {
 
 const NavNoAuth = (props) => (
     <>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top" uk-navbar>
-            <div className="navbar-brand">Ink-Speaks</div>
+        <nav className="navbar navbar-expand-lg navbar-light bg-default fixed-top" uk-navbar>
+            <Link to={ROUTES.landing} className="navbar-brand"><span className="frijole">Ink </span><span className="loved-by-king">Speaks</span></Link>
             <button className="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div id="my-nav" className="collapse navbar-collapse">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item item active uk-navbar-item">
-                        <Link className="nav-a" to="#">Trending<span className="sr-only">(current)</span></Link>
+                        {/* <Link className="nav-a" to="#">Trending<span className="sr-only">(current)</span></Link> */}
                     </li>
                     <li className="nav-item item active uk-navbar-item">
-                        <Link className="nav-a" to="#">Categories<span className="sr-only">(current)</span></Link>
+                        {/* <Link className="nav-a" to="#">Categories<span className="sr-only">(current)</span></Link> */}
                     </li>
                 </ul>
                 <div className="nav-item uk-navbar-item">
@@ -59,16 +59,16 @@ const NavNoAuth = (props) => (
                 </li>
             </div>
         </nav>
+        {/* <br />
         <br />
-        <br />
-        <br />
+        <br /> */}
     </>
 )
 
 const NavAuth = (props) => (
     <>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top" uk-navbar>
-            <Link to={ROUTES.landing} className="navbar-brand">Ink-Speaks</Link>
+        <nav className="navbar navbar-expand-lg navbar-light bg-default fixed-top" uk-navbar>
+            <Link to={ROUTES.landing} className="navbar-brand"><span className="frijole">Ink </span><span className="loved-by-king">Speaks</span></Link>
             <button className="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -78,9 +78,9 @@ const NavAuth = (props) => (
                 <RightNav toggleAuth={props.toggleAuth} history={props.history} />
             </div>
         </nav>
+        {/* <br />
         <br />
-        <br />
-        <br />
+        <br /> */}
     </>
 )
 

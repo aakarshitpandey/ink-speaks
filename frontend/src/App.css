@@ -1,16 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Livvic:ital,wght@1,500&family=Uncial+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Frijole&family=Great+Vibes&family=Loved+by+the+King&family=Source+Code+Pro:wght@500&display=swap');
 
 * {
-  font-family: 'Livvic', sans-serif;
+  /* font-family: 'Livvic', sans-serif; */
+  font-family: 'Source Code Pro', monospace;
+}
+
+.intro {
+  height: 100vh;
+  background-image: url('./background.jpg');
+  background-size: cover;
+}
+
+.span-intro:nth-child(1) {
+  font-size: 8em;
+  font-family: 'Frijole', cursive;
+  /* font-family: 'Great Vibes', cursive; */
+}
+
+.span-intro:nth-child(2) {
+  font-size: 8em;
+  font-family: 'Loved by the King', cursive;
+}
+
+.intro-svg {
+  max-width: 50%;
+  max-height: 50%;
+}
+
+nav {
+  background-color: rgba(264, 264, 264, 0.2);
 }
 
 nav a {
-  font-family: 'Uncial Antiqua', cursive;
+  /* font-family: 'Uncial Antiqua', cursive; */
+  font-family: 'Source Code Pro', monospace;
+  color: black;
 }
 
 nav a:hover {
   text-decoration: none;
-  color: #09d3ac;
+  color: grey;
 }
 
 .App {
@@ -33,8 +63,12 @@ nav a:hover {
 }
 
 .post {
-  background: rgba(9, 211, 172, 0.9);
-  margin-bottom: 10px;
+  /* background:  rgba(9, 211, 172, 0.9); */
+  background:  white;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.7);
+  /* border-radius: 30px; */
+  /* border: 10px 10px 10px 10px solid rgba(37, 161, 136, 0.5); */
+  margin-bottom: 15px;
 }
 
 .post-data {
@@ -123,6 +157,18 @@ nav .item:hover::before {
   margin-right: 10px;
 }
 
+.loading-spinner {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+
+.loading-spinner-component {
+  position: relative;
+  vertical-align: middle;
+  align-items: center;
+}
+
 @media(max-width: 550px) {
   .reaction {
     padding: 7px;
@@ -134,4 +180,49 @@ nav .item:hover::before {
     margin-left: 3px;
     margin-right: 3px;
   }
+}
+
+.wrd-otd {
+  position: fixed;
+  z-index: 999;
+  border-radius: 30px;
+  width: 25% !important;
+  margin: 5px;
+  bottom: 2%;
+  right: 2%;
+}
+
+@media(max-width: 600px) {
+  .wrd-otd {
+    width: 100% !important;
+  }
+}
+
+.bg-faded {
+  /* background: #b1afaf; */
+  background: linear-gradient(to bottom, white, #c5c5c5);
+}
+
+.full-height {
+  min-height: 100vh;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+}
+
+.frijole {
+  font-family: 'Frijole', cursive;
+}
+
+.livvic {
+  font-family: 'Livvic', sans-serif;
+}
+
+.loved-by-king {
+  font-family: 'Loved by the King', cursive;
+}
+
+.src-code-pro {
+  font-family: 'Source Code Pro', monospace;
 }

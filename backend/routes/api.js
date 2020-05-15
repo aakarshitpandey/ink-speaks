@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const passport = require('passport')
 const Blog = require('../models/blog')
+var multer = require('multer')
+var upload = multer({ limits: { fieldSize: 1024 * 1024 * 1024 } })
 
 const router = express.Router()
 
@@ -135,12 +137,12 @@ router.post('/login', (req, res) => {
   })
 })
 
-router.post('/compose', authenticate, (req, res, next) => {
+router.post('/compose', authenticate, upload.none(), (req, res, next) => {
   console.log(`Blog Post request recieved`)
-  if (res.userInfo._id) {
-    const { userInfo } = res
+  if (req.userInfo._id) {
+    const { userInfo } = req
     const newBlog = new Blog({
-      authorID: res.userInfo._id,
+      authorID: req.userInfo._id,
       authorName: `${userInfo.firstName} ${userInfo.lastName}`,
       data: req.body.data,
       categories: req.body.categories,
@@ -201,7 +203,7 @@ router.get('/blogs/:id', authenticate, (req, res) => {
 })
 
 router.get('/blogs/subscriptions', authenticate, (req, res) => {
-  const { following } = res.userInfo
+  const { following } = req.userInfo
   let blogArr = []
   following.map((creatorID) => {
     if (blogArr.length < 50) {
@@ -227,12 +229,42 @@ router.get('/blogpost/likes/:id', authenticate, (req, res) => {
   }
   console.log("Counter:", counter)
   Blog.findOne({ _id: `${req.params.id}` })
-    .then((blog) => {
+    .then(async (blog) => {
       blog.reactions.likes += counter
       if (isNaN(blog.reactions.views)) {
         blog.reactions.views = 1
       }
-      console.log(blog.reactions)
+      if (counter === 1) {
+        blog.reactions.likedUsers.push(req.userInfo._id)
+        if (req.userInfo.likedBlogs)
+          req.userInfo.likedBlogs.push(req.params.id)
+      } else if (counter === -1) {
+        // let index = blog.reactions.likedUsers.indexOf(req.userInfo._id)
+        // console.log(index, req.userInfo._id)
+        let index = -1
+        for (let likedUser in blog.reactions.likedUsers) {
+          console.log('inside')
+          if (`${blog.reactions.likedUsers[likedUser]}`.localeCompare(`${req.userInfo._id}`) === 0) {
+            index = likedUser
+            break
+          }
+        }
+        if (index >= 0) {
+          blog.reactions.likedUsers.splice(index, 1)
+        }
+        if (req.userInfo.likedBlogs) {
+          index = req.userInfo.likedBlogs.indexOf(req.params.id)
+          if (index >= 0) {
+            req.userInfo.likedBlogs.splice(index, 1)
+          }
+        }
+      }
+      console.log("reactions: ", blog.reactions)
+      try {
+        await User.updateOne({ _id: req.userInfo._id }, { likedUsers: req.userInfo.likedUsers })
+      } catch (e) {
+        console.log(e)
+      }
       Blog.updateOne({ _id: `${req.params.id}` }, { reactions: { ...blog.reactions } })
         .then((updatedBlog) => {
           res.status(200).json({ blog: blog })
@@ -244,6 +276,7 @@ router.get('/blogpost/likes/:id', authenticate, (req, res) => {
         })
     })
     .catch((err) => {
+      console.log(err)
       res.status(400).send({ msg: err })
     })
 })
@@ -303,7 +336,7 @@ async function authenticate(req, res, next) {
       return
     }
     //if authentication successfull
-    res.userInfo = user
+    req.userInfo = user
     next()
   })(req, res, next)
 }
