@@ -60,8 +60,12 @@ nav a:hover {
 }
 
 .post {
-  background: rgba(9, 211, 172, 0.9);
-  margin-bottom: 10px;
+  /* background:  rgba(9, 211, 172, 0.9); */
+  background:  white;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.7);
+  /* border-radius: 30px; */
+  /* border: 10px 10px 10px 10px solid rgba(37, 161, 136, 0.5); */
+  margin-bottom: 15px;
 }
 
 .post-data {
@@ -189,6 +193,15 @@ nav .item:hover::before {
   .wrd-otd {
     width: 100% !important;
   }
+}
+
+.bg-faded {
+  /* background: #b1afaf; */
+  background: linear-gradient(to bottom, white, grey);
+}
+
+.full-height {
+  min-height: 100vh;
 }
 
 .frijole {
