@@ -197,7 +197,7 @@ nav .item:hover::before {
 
 .bg-faded {
   /* background: #b1afaf; */
-  background: linear-gradient(to bottom, white, grey);
+  background: linear-gradient(to bottom, white, #b1afaf);
 }
 
 .full-height {
