@@ -32,6 +32,24 @@ nav {
   background-color: rgba(264, 264, 264, 0.2);
 }
 
+@media(max-width: 700px) {
+  .nav-bg-dark {
+    background-color: rgba(34, 34, 34, 0.8);
+  }
+
+  .nav-bg-dark a {
+    color: white;
+  }
+
+  .nav-bg-dark .navbar-brand span {
+    color: white;
+  }
+
+  .hide-sm-scroll {
+    display: none;
+  }
+}
+
 nav a {
   /* font-family: 'Uncial Antiqua', cursive; */
   font-family: 'Source Code Pro', monospace;
