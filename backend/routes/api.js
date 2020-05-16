@@ -350,24 +350,42 @@ router.delete('/blog/:id', authenticate, async (req, res) => {
   } //end try-catch
 })
 
-router.post('/subscribe/', authenticate, (req, res) => {
-  User.findOne({ _id: `${req.body.authorID}` })
-    .then(async (user) => {
-      let response = null;
-      try {
-        if (!user.followers.contains(req.userInfo._id)) {
-          response = await User.updateOne({ _id: `${req.body.authorID}` }, { followers: [...user.followers, req.userInfo._id] })
-        } else {
-          response = await User.updateOne({ _id: `${req.body.authorID}` }, { followers: user.followers.splice(user.followers.indexOf(req.userInfo._id)) })
-        }
-        if (response) {
-          res.send(200).json({ msg: `Toggled Subscribe` });
-        }
-      } catch (e) {
-        console.log(e)
-        res.send(400).json({ msg: `Couldn't toggle subscribe` });
-      }
-    })
+router.post('/subscribe', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.body.authorID)
+    const index = user.followers.indexOf(req.userInfo._id)
+    if (index >= 0) {
+      console.log('unsubscribing')
+      user.followers.splice(index, 1)
+    } else {
+      console.log('subscribing')
+      user.followers.push(req.userInfo._id)
+    }
+    await User.updateOne({ _id: `${req.body.authorID}` }, { followers: user.followers })
+    if (index >= 0) {
+      res.status(200).json({ msg: 'The author has been unsubscribed' })
+    } else {
+      res.status(200).json({ msg: 'The author has been subscribed' })
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({ msg: 'Could not subscribe' })
+  }
+})
+
+router.get('/isSubscribed', authenticate, async (req, res) => {
+  const { author } = req.query
+  try {
+    const user = await User.findById(author)
+    if (user.followers.indexOf(req.userInfo._id) >= 0) {
+      res.status(200).json({ isSubscribed: true, msg: 'The user is subscribed to this author' })
+    } else {
+      res.status(200).json({ isSubscribed: false, msg: 'The user is not subscribed to this author' })
+    }
+  } catch (e) {
+    console.log(e.message)
+    res.status(404).json({ msg: 'Error occurred' })
+  }
 })
 
 async function authenticate(req, res, next) {

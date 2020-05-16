@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { getBlogById, likeBlog, getBlogContentsById } from '../../api/blogHandler'
+import { getBlogById, likeBlog, getBlogContentsById, isSubscribed, subscribe } from '../../api/blogHandler'
 import { loggedIn } from '../../api/auth'
 import { Article } from 'uikit-react'
 import { getUser } from '../../api/auth'
@@ -30,6 +30,7 @@ export default class Blog extends Component {
             likedIcon: notLiked,
             isLiked: false,
             blogContent: '',
+            isSubscribed: false,
         }
     }
 
@@ -56,11 +57,22 @@ export default class Blog extends Component {
                 this.setState({ loadingBlogContent: true })
                 const ret = await getBlogContentsById(res.data.blog.data)
                 this.setState({ blogContent: ret.data, loadingBlogContent: false })
+                ret = await isSubscribed(this.state.blog.authorID)
+                this.setState({ isSubscribed: ret.isSubscribed })
             } else {
                 this.setState({ loading: false, msg: `Error occured...try again!` })
             }
         } catch (err) {
             this.setState({ loading: false, msg: `Error occured...try again!` })
+        }
+    }
+
+    toggleSubscribe = async () => {
+        try {
+            const ret = await subscribe(this.state.blog.authorID)
+            this.setState({ isSubscribed: !this.state.isSubscribed })
+        } catch (e) {
+            console.log(e)
         }
     }
 
@@ -102,7 +114,11 @@ export default class Blog extends Component {
                                     <span className="uk-badge reaction-btn-list"> {likes} likes</span>
                                     <img className="reaction reaction-icon" onClick={this.onLike} src={this.state.likedIcon} />
                                     <div className="reaction uk-link uk-button uk-button-secondary uk-margin uk-margin-top reaction-btn-list">Share</div>
-                                    <div className="reaction uk-button uk-button-danger uk-margin reaction-btn-list">Subscribe</div>
+                                    <div
+                                        className="reaction uk-button uk-button-danger uk-margin reaction-btn-list"
+                                        onClick={this.toggleSubscribe}>
+                                        {this.state.isSubscribed ? "Unsubscribe" : "Subscribe"}
+                                    </div>
                                 </div>
                             </div>
                     }

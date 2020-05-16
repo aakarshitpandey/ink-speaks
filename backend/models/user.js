@@ -19,15 +19,15 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     blogs: {
-        type: Array,
+        type: [mongoose.Schema.Types.ObjectId],
         default: []
     },
     followers: {
-        type: Array,
+        type: [mongoose.Schema.Types.ObjectId],
         default: []
     },
     following: {
-        type: Array,
+        type: [mongoose.Schema.Types.ObjectId],
         default: []
     },
     password: {

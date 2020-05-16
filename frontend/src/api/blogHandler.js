@@ -154,10 +154,27 @@ export const subscribe = async (authorID) => {
                 Authorization: `Bearer ${getToken()}`
             }
         })
-        console.log(res)
-        return Promise.resolve(res)
+        console.log(res.data)
+        return Promise.resolve(res.data)
     } catch (e) {
         console.log(e)
         return Promise.reject({ msg: e })
     }
+}
+
+export const isSubscribed = async (authorID) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await api.get(`${routes.isSubscribed}?author=${authorID}`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            })
+            console.log(res.data)
+            return resolve(res.data)
+        } catch (e) {
+            console.log(e)
+            return reject({ msg: e })
+        }
+    })
 }
