@@ -9,6 +9,7 @@ import { Alerts } from '../Utils/alert'
 import Liked from '../../liked.png'
 import notLiked from '../../not-liked.png'
 import Loading from '../Utils/loading'
+import Taglist from '../Utils/taglist'
 
 
 export default class Blog extends Component {
@@ -105,6 +106,7 @@ export default class Blog extends Component {
                             <div className="loading-spinner"><div uk-spinner="ratio: 3"></div></div> :
                             <div className="uk-margin-large-top uk-background-muted uk-box-shadow-small uk-margin-auto uk-padding-small">
                                 <Article title={blog.title} meta={`Written by ${blog.authorName}`}>
+                                    <Taglist tags={this.state.blog.categories} />
                                     {this.state.loadingBlogContent ?
                                         <Loading /> :
                                         <div dangerouslySetInnerHTML={{ __html: this.state.blogContent }} />

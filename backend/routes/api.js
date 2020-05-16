@@ -140,6 +140,8 @@ router.post('/login', (req, res) => {
 
 router.post('/compose', authenticate, upload.none(), async (req, res, next) => {
   console.log(`Blog Post request recieved`)
+  const blog = JSON.parse(req.body.blog)
+  req.body = { ...req.body, ...blog }
   if (req.userInfo._id) {
     const { userInfo } = req
     const content = new Content({ data: req.body.data })

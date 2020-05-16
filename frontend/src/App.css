@@ -273,6 +273,14 @@ nav .item:hover::before {
   padding: 5px 5px 0;
 }
 
+.tag-display {
+  background: transparent;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px 5px 0;
+  margin-bottom: 5px;
+}
+
 .input-tag input {
   border: none;
   width: 100%;

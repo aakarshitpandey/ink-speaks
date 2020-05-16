@@ -14,7 +14,6 @@ export default class TextEditor extends Component {
 
     handleChange(value) {
         this.setState({ text: value })
-        console.log(this.state)
     }
 
     updateTags = (tags) => {
@@ -29,7 +28,6 @@ export default class TextEditor extends Component {
             categories: [...this.state.categories],
         }
         body.isPosted = (`${e.target.getAttribute('name')}`).localeCompare("Draft") === 0 ? false : true
-        console.log(body)
         this.setState({ loading: true })
         try {
             const res = await addBlog(body);
