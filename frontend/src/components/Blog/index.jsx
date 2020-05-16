@@ -55,7 +55,7 @@ export default class Blog extends Component {
                     }
                 }
                 this.setState({ loadingBlogContent: true })
-                const ret = await getBlogContentsById(res.data.blog.data)
+                let ret = await getBlogContentsById(res.data.blog.data)
                 this.setState({ blogContent: ret.data, loadingBlogContent: false })
                 ret = await isSubscribed(this.state.blog.authorID)
                 this.setState({ isSubscribed: ret.isSubscribed })

@@ -170,7 +170,6 @@ export const isSubscribed = async (authorID) => {
                     Authorization: `Bearer ${getToken()}`
                 }
             })
-            console.log(res.data)
             return resolve(res.data)
         } catch (e) {
             console.log(e)
