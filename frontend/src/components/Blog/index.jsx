@@ -117,7 +117,7 @@ export default class Blog extends Component {
                                     <div className="uk-inline">
                                         <button className="reaction uk-link uk-button uk-button-secondary uk-margin uk-margin-top reaction-btn-list" type="button">Share</button>
                                         <div uk-drop="animation: uk-animation-slide-top-small; duration: 500">
-                                            <div class="uk-card uk-card-body uk-card-default" style={{ padding: "7px 7px", border: '1px solid black' }}>
+                                            <div class="uk-card uk-flex uk-card-body uk-card-default" style={{ padding: "7px 7px", border: '1px solid black' }}>
                                                 <div style={{ width: '80%', overflowX: 'scroll', marginRight: '2px' }}>{window.location.href}</div>
                                                 <button onClick={() => { navigator.clipboard.writeText(`${window.location.href}`) }}>
                                                     <div uk-icon="icon: copy"></div>
