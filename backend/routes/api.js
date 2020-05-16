@@ -320,24 +320,72 @@ router.get('/blogpost/:id', authenticate, (req, res) => {
     })
 })
 
-router.post('/subscribe/', authenticate, (req, res) => {
-  User.findOne({ _id: `${req.body.authorID}` })
-    .then(async (user) => {
-      let response = null;
-      try {
-        if (!user.followers.contains(req.userInfo._id)) {
-          response = await User.updateOne({ _id: `${req.body.authorID}` }, { followers: [...user.followers, req.userInfo._id] })
-        } else {
-          response = await User.updateOne({ _id: `${req.body.authorID}` }, { followers: user.followers.splice(user.followers.indexOf(req.userInfo._id)) })
-        }
-        if (response) {
-          res.send(200).json({ msg: `Toggled Subscribe` });
-        }
-      } catch (e) {
-        console.log(e)
-        res.send(400).json({ msg: `Couldn't toggle subscribe` });
+router.delete('/blog/:id', authenticate, async (req, res) => {
+  const { id } = req.params
+  try {
+    const blog = await Blog.findById(id)
+    const authorID = blog.authorID
+    console.log(blog)
+    if (!blog) {
+      return res.status(404).json({ msg: 'Blog not found' })
+    }
+    try {
+      console.log('deleting: ', blog.data)
+      const ret = await Content.deleteOne({ _id: blog.data })
+    } catch (e) {
+      console.log('Could not delete the content')
+    } //end try-catch
+    await Blog.deleteOne({ _id: id })
+    const author = await User.findOne({ _id: authorID })
+    for (let i = 0; i < author.blogs.length; i++) {
+      if (`${author.blogs[i]}`.localeCompare(`${id}`) === 0) {
+        author.blogs.splice(i, 1)
+        break
       }
-    })
+    }
+    await User.updateOne({ _id: authorID }, { blogs: author.blogs })
+    res.status(200).json({ msg: 'The blog was successfully deleted' })
+  } catch (e) {
+    res.status(400).json({ msg: e.message })
+  } //end try-catch
+})
+
+router.post('/subscribe', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.body.authorID)
+    const index = user.followers.indexOf(req.userInfo._id)
+    if (index >= 0) {
+      console.log('unsubscribing')
+      user.followers.splice(index, 1)
+    } else {
+      console.log('subscribing')
+      user.followers.push(req.userInfo._id)
+    }
+    await User.updateOne({ _id: `${req.body.authorID}` }, { followers: user.followers })
+    if (index >= 0) {
+      res.status(200).json({ msg: 'The author has been unsubscribed' })
+    } else {
+      res.status(200).json({ msg: 'The author has been subscribed' })
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({ msg: 'Could not subscribe' })
+  }
+})
+
+router.get('/isSubscribed', authenticate, async (req, res) => {
+  const { author } = req.query
+  try {
+    const user = await User.findById(author)
+    if (user.followers.indexOf(req.userInfo._id) >= 0) {
+      res.status(200).json({ isSubscribed: true, msg: 'The user is subscribed to this author' })
+    } else {
+      res.status(200).json({ isSubscribed: false, msg: 'The user is not subscribed to this author' })
+    }
+  } catch (e) {
+    console.log(e.message)
+    res.status(404).json({ msg: 'Error occurred' })
+  }
 })
 
 async function authenticate(req, res, next) {

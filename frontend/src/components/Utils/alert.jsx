@@ -21,3 +21,11 @@ const Closed = (props) => {
         return <></>
     }
 }
+
+export const DeleteMessage = (props) => (
+    <div className="delete-msg">
+        <p>Are you sure you want to delete this blog?</p>
+        <button className="yes-delete" onClick={() => { props.yesAction() }}>Yes</button>
+        <button className="no-delete" onClick={() => { props.noAction() }}>No</button>
+    </div >
+)

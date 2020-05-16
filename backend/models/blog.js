@@ -21,7 +21,12 @@ const blogSchema = new mongoose.Schema({
     },
     reactions: {
         type: Object,
-        default: { likes: 0, views: 0, likedUsers: [], viewedUsers: [] }
+        default: {
+            likes: 0,
+            views: 0,
+            likedUsers: [mongoose.Schema.Types.ObjectId],
+            viewedUsers: [mongoose.Schema.Types.ObjectId]
+        }
     },
     categories: {
         type: Array,
