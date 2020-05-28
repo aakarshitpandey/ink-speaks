@@ -27,6 +27,6 @@ function getHash(string) {
 
 export default () => {
     const today = new Date()
-    const idx = getHash(`${today.getDate}/${today.getMonth}/${today.getFullYear}`)
+    const idx = getHash(`${today.getDate()}/${today.getMonth()}/${today.getFullYear()}`)
     return words[idx]
 }

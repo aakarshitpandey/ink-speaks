@@ -6,9 +6,7 @@ import { Link } from 'react-router-dom'
 export default class WordOfTheDay extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            word: getWordOfTheDay()
-        }
+        this.state = { word: getWordOfTheDay() }
     }
 
     toTitleCase = (string) => {
