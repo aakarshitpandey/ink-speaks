@@ -7,5 +7,6 @@ module.exports = {
     addArticle: '/users/compose',
     article: '/users/article',
     myaccount: '/users/account',
-    privacy: '/policy/privacy'
+    privacy: '/policy/privacy',
+    terms: '/policy/terms'
 }

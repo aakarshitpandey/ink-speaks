@@ -9,7 +9,8 @@ import Dashboard from './components/Dashboard';
 import Compose from './components/ComposeArticle';
 import Blog from './components/Blog';
 import MyAccount from './components/MyAccount';
-import PrivacyPolicy from './components/PrivacyPolicy'
+import PrivacyPolicy from './components/Policy/privacypolicy'
+import Terms from './components/Policy/terms'
 
 const App = () => (
   <Router>
@@ -20,6 +21,7 @@ const App = () => (
       <Route path={`${ROUTES.addArticle}`} component={Compose} />
       <Route path={`${ROUTES.article}/:id`} component={Blog} />
       <Route path={`${ROUTES.myaccount}`} component={MyAccount} />
+      <Route path={`${ROUTES.terms}`} component={Terms} />
       <Route path={`${ROUTES.privacy}`} component={PrivacyPolicy} />
     </div>
   </Router>
