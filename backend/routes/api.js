@@ -83,6 +83,46 @@ router.post('/register', (req, res) => {
   })
 })
 
+router.get('/auth/facebook', passport.authenticate('facebook', { authType: 'rerequest', scope: ['email'] }))
+
+router.get('/auth/facebook/callback', (req, res, next) => {
+  passport.authenticate('facebook', { failureRedirect: '/login' }, (err, user, info) => {
+    if (err) {
+      console.log(err)
+      res.status(400).json({ msg: 'There was an error' });
+      return
+    }
+
+    if (!user) {
+      console.log(`invalid login`)
+      res.status(404).json({ msg: 'Invalid Token.' })
+      return
+    }
+    //if authentication successfull
+    const payload = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email
+    };
+
+    console.log(payload)
+
+    //sign token
+    jwt.sign(
+      payload,
+      process.env.PRIVATE_KEY,
+      { expiresIn: 31556926 },
+      (err, token) => {
+        if (err) {
+          res.status(400).json({ error: 'Login Failed, try again' })
+        }
+        res.redirect('/users/dash?token=' + token)
+      }
+    )
+  })(req, res, next)
+})
+
 //login
 router.post('/login', (req, res) => {
 

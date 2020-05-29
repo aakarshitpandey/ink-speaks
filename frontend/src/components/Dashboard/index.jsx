@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getUser, loggedIn } from '../../api/auth'
+import { getUser, loggedIn, qsLoggedIn } from '../../api/auth'
 import * as ROUTES from '../../routes/index'
 import { Alerts } from '../Utils/alert'
 import BlogList from '../BlogLists'
@@ -15,7 +15,7 @@ export default class Dashboard extends Component {
     }
 
     componentDidMount() {
-        if (loggedIn()) {
+        if (loggedIn() || qsLoggedIn(this.props.location.search)) {
             const user = getUser()
             this.setState({ user: user })
         } else {

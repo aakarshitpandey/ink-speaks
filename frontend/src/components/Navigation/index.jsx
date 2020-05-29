@@ -1,8 +1,8 @@
 import React, { Component, useState } from 'react'
 import { ForgotPassword } from '../SignUp/forgotPassword'
-import { Link, Route } from 'react-router-dom'
+import { Link, Route, Redirect } from 'react-router-dom'
 import SignIn from '../SignIn'
-import { getUser } from '../../api/auth'
+import { getUser, registerFacebook, qsLoggedIn } from '../../api/auth'
 import * as ROUTES from '../../routes/index'
 import LogoutButton from '../SignIn/logoutbtn'
 import { withRouter } from 'react-router-dom'
@@ -16,6 +16,7 @@ class NavBar extends Component {
     }
 
     componentDidMount() {
+        qsLoggedIn(this.props.location.search)
         const user = getUser()
         if (user && user != null) {
             this.setState({ isLoggedIn: true })
@@ -37,6 +38,11 @@ class NavBar extends Component {
 
 const NavNoAuth = (props) => {
     const [collapsed, setCollapsed] = useState(true)
+
+    const onClick = () => {
+        registerFacebook()
+    }
+
     return (<>
         <nav className={`navbar navbar-expand-lg navbar-light bg-default fixed-top ${collapsed ? "" : "nav-bg-dark"}`} uk-navbar>
             <Link to={ROUTES.landing} className="navbar-brand"><span className="frijole">Ink </span><span className="loved-by-king">Speaks</span></Link>
@@ -54,6 +60,9 @@ const NavNoAuth = (props) => {
                 </ul>
                 <div className="nav-item uk-navbar-item">
                     <SignIn toggleAuth={props.toggleAuth} />
+                </div>
+                <div className="uk-button uk-button-primary" onClick={onClick}>
+                    Facebook
                 </div>
                 <li className="nav-item active uk-navbar-item">
                     <ForgotPassword />

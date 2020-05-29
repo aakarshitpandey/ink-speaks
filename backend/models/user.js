@@ -32,11 +32,18 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
     },
     date: {
         type: Date,
         default: Date.now,
+    },
+    facebookLogin: {
+        type: {
+            isValid: mongoose.Schema.Types.Boolean,
+            facebookID: mongoose.Schema.Types.String,
+            accessToken: mongoose.Schema.Types.String
+        },
+        default: { isValid: false, facebookID: undefined }
     }
 });
 
