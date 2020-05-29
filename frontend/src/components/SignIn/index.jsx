@@ -24,8 +24,6 @@ export default class SignIn extends Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
-
-
     onSubmit = async (event) => {
         event.preventDefault()
         this.setState({ loading: true })

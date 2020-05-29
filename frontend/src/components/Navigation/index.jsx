@@ -5,6 +5,7 @@ import { getUser, registerFacebook, qsLoggedIn } from '../../api/auth'
 import * as ROUTES from '../../routes/index'
 import LogoutButton from '../SignIn/logoutbtn'
 import { withRouter } from 'react-router-dom'
+import { SignUpButton } from '../SignUp'
 
 class NavBar extends Component {
     constructor(props) {
@@ -55,6 +56,9 @@ const NavNoAuth = (props) => {
                 </ul>
                 <div className="nav-item uk-navbar-item">
                     <SignIn toggleAuth={props.toggleAuth} />
+                </div>
+                <div className="nav-item uk-navbar-item">
+                    <SignUpButton />
                 </div>
             </div>
         </nav>

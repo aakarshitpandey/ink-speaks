@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import SignUp from '../SignUp'
 import Posts from '../Posts'
 import { loggedIn } from '../../api/auth'
 import PenSVG from './feather.jsx'
@@ -21,7 +20,7 @@ class Landing extends Component {
     }
 
     render() {
-        let trendingClassList = "uk-section uk-section-default col-md-6 col-lg-6 col-sm-12 post-container full-height"
+        let trendingClassList = "uk-section uk-section-default col-md-12 col-lg-12 col-sm-12 post-container full-height"
         if (this.state.isLoggedIn) {
             trendingClassList = "uk-section uk-section-default col-md-12 col-lg-12 col-sm-12 post-container bg-faded full-height"
         } //end if
@@ -45,13 +44,13 @@ class Landing extends Component {
                     </div>
                     {/* </div> */}
                     {/* <div className="uk-width-1-2@m"> */}
-                    {this.state.isLoggedIn ? <></> :
+                    {/* {this.state.isLoggedIn ? <></> :
                         <div id="signUpContainer" className="uk-tile uk-tile-muted uk-tile-default col-md-6 col-lg-6 col-sm-12">
                             <div className="uk-card uk-card-secondary uk-card-body">
                                 <SignUp />
                             </div>
                         </div>
-                    }
+                    } */}
                     {/* </div> */}
                 </div>
             </>

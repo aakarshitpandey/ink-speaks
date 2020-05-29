@@ -332,3 +332,13 @@ nav .item:hover::before {
   flex-grow: 1;
   padding: 0;
 }
+
+.register-btn {
+  background-color: #F9AA33;
+  border-color: black;
+}
+
+.register-btn:hover {
+  background-color: rgba(250, 159, 21, 0.7);
+  /* border-color: black; */
+}

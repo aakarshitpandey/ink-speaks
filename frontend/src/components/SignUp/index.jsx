@@ -1,6 +1,9 @@
-import React from 'react'
-import { register } from '../../api/auth'
+import React, { useState } from 'react'
+import { register, registerFacebook } from '../../api/auth'
 import { validateEmail } from '../Utils/constants'
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
+
 
 const RESET_STATE = {
     firstName: '',
@@ -8,6 +11,53 @@ const RESET_STATE = {
     email: '',
     password: '',
     passwordConf: '',
+}
+
+export const SignUpButton = () => {
+    const [show, setShow] = useState(false)
+
+    const handleClose = () => {
+        setShow(false)
+    }
+
+    const handleShow = () => {
+        setShow(true)
+    }
+
+    const fbBtn = () => {
+        registerFacebook()
+    }
+
+    return (
+        <>
+            <div className="nav-item uk-button uk-button-default register-btn" onClick={handleShow}>
+                Register
+            </div>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Sign Up</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div id="signUpContainer">
+                        <div /*className="uk-card uk-card-secondary uk-card-body"*/>
+                            <SignUp />
+                        </div>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className="uk-button uk-button-primary" style={{
+                        paddingLeft: '5px',
+                        paddingRight: '8px'
+                    }} onClick={fbBtn}>
+                        <span uk-icon="icon: facebook; ratio: 1"></span> Sign Up
+                        </div>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
+    )
 }
 
 export default class SignUp extends React.Component {
@@ -55,7 +105,7 @@ export default class SignUp extends React.Component {
             <div className="uk-margin-remove" >
                 <form onSubmit={this.onSubmit}>
                     <fieldset className="uk-fieldset">
-                        <legend className="uk-legend">Sign Up</legend>
+                        {/* <legend className="uk-legend">Sign Up</legend> */}
                         <div className="uk-margin">
                             <input className="uk-input"
                                 name="firstName"
