@@ -1,5 +1,5 @@
 import React from 'react'
 
 export const ForgotPassword = () => (
-    <p className="uk-navbar-item">Forgot Password</p>
+    <p className="uk-link uk-link-text">Forgot Password?</p>
 )
