@@ -3,6 +3,7 @@ const express = require('express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const Tags = require('../models/tags')
 const passport = require('passport')
 const Blog = require('../models/blog')
 const Content = require('../models/content')
@@ -198,6 +199,7 @@ router.post('/compose', authenticate, upload.none(), async (req, res, next) => {
       newBlog.save()
         .then((blog) => {
           try {
+            addTags(blog.categories, blog._id)
             updateUser(userInfo._id, { blogs: [...(userInfo.blogs), blog._id] })
               .then((user) => res.status(200).json({ blog: blog, msg: 'The blog has been saved' }))
               .catch((err) => {
@@ -379,6 +381,8 @@ router.delete('/blog/:id', authenticate, async (req, res) => {
     } //end try-catch
     await Blog.deleteOne({ _id: id })
     const author = await User.findOne({ _id: authorID })
+    if (blog.categories)
+      deleteTags(blog.categories, id)
     for (let i = 0; i < author.blogs.length; i++) {
       if (`${author.blogs[i]}`.localeCompare(`${id}`) === 0) {
         author.blogs.splice(i, 1)
@@ -430,6 +434,19 @@ router.get('/isSubscribed', authenticate, async (req, res) => {
   }
 })
 
+router.get('/topTags', async (req, res) => {
+  try {
+    const tags = (await Tags.find({})).sort(compareTags)
+    let resTags = tags
+    if (resTags.length > 30)
+      resTags = resTags.slice(0, 30)
+    res.status(200).json({ tags: resTags })
+  } catch (e) {
+    console.log(e.message)
+    res.status(500).json({ msg: e.message })
+  }
+})
+
 async function authenticate(req, res, next) {
   console.log(`authenticate`)
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
@@ -463,11 +480,73 @@ const updateUser = async (id, data) => {
   }
 }
 
+const addTags = async (tags, blogID) => {
+  return new Promise(async (resolve, reject) => {
+    if (!tags) return reject({ message: 'Tag could not be added' })
+    Promise.all(tags.map(tag => {
+      return new Promise(async (res, rej) => {
+        try {
+          const retTag = await Tags.findOne({ name: tag })
+          if (!retTag) {
+            const newTag = new Tags({ name: tag, blogs: [blogID] })
+            await newTag.save()
+            res()
+          } else {
+            retTag.blogs.push(blogID)
+            await Tags.updateOne({ _id: retTag._id }, { blogs: retTag.blogs })
+            res()
+          }
+        } catch (e) {
+          rej()
+        }
+      })
+    }))
+    resolve({ message: 'Tags have been updated' })
+  })
+}
+
+const deleteTags = async (tags, blogID) => {
+  return new Promise(async (resolve, reject) => {
+    if (!tags) return reject({ message: 'Tag could not be deleted' })
+    Promise.all(tags.map(tag => {
+      return new Promise(async (res, rej) => {
+        try {
+          const retTag = await Tags.findOne({ name: tag })
+          if (retTag) {
+            for (let i = 0; i < retTag.blogs.length; i++) {
+              if (`${retTag.blogs[i]}`.localeCompare(`${blogID}`) === 0) {
+                retTag.blogs.splice(i, 1)
+                break
+              } //end if
+            } //end for
+            if (retTag.blogs.length === 0) {
+              await Tags.deleteOne({ _id: retTag._id })
+            } //end if
+            res()
+          }
+        } catch (e) {
+          rej()
+        } //end try-catch
+      })
+    }))
+    resolve({ message: 'Tags have been updated' })
+  })
+}
+
 const compareDates = (b1, b2) => {
   if (b1.date < b2.date) {
     return 1
   } else if (b1.date > b2.date) {
     return -1
+  }
+  return 0
+}
+
+const compareTags = (a, b) => {
+  if (a.blogs.length < b.blogs.length) {
+    return -1
+  } else if (a.blogs.length > b.blogs.length) {
+    return 1
   }
   return 0
 }

@@ -3,6 +3,7 @@ import Posts from '../Posts'
 import { loggedIn } from '../../api/auth'
 import PenSVG from './feather.jsx'
 import WordOfTheDay from '../WordOfTheDay'
+import SidePanel from '../SidePanel'
 
 class Landing extends Component {
 
@@ -38,8 +39,9 @@ class Landing extends Component {
                     {/* <div className="uk-width-1-2@m uk-flex-first"> */}
                     <div id="trending-container" className={trendingClassList}>
                         <h1 className="uk-text-center"> Trending</h1>
-                        <div className="uk-container uk-container-small">
-                            <Posts general={true} />
+                        <div className="row max-width-full">
+                            <div className="col-sm-12 col-lg-10 col-md-9" style={{ paddingLeft: '3px' }}><Posts general={true} /></div>
+                            <div className="col-sm-12 col-lg-2 col-md-3"><SidePanel /></div>
                         </div>
                     </div>
                     {/* </div> */}

@@ -11,5 +11,6 @@ module.exports = {
     userProfile: 'userProfile/',
     blogContent: 'blogContent/',
     blogDelete: 'blog/',
-    facebook: 'auth/facebook/'
+    facebook: 'auth/facebook/',
+    topTags: 'topTags'
 }

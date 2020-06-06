@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { getBlogById, likeBlog, getBlogContentsById, isSubscribed, subscribe } from '../../api/blogHandler'
+import ReactQuill from 'react-quill'
 import { loggedIn } from '../../api/auth'
 import { Article } from 'uikit-react'
 import { getUser } from '../../api/auth'
@@ -109,7 +110,9 @@ export default class Blog extends Component {
                                     <Taglist tags={this.state.blog.categories} />
                                     {this.state.loadingBlogContent ?
                                         <Loading /> :
-                                        <div dangerouslySetInnerHTML={{ __html: this.state.blogContent }} />
+                                        // <div dangerouslySetInnerHTML={{ __html: this.state.blogContent }} />
+                                        <ReactQuill value={this.state.blogContent} preserveWhiteSpace={true}
+                                            readOnly={true} modules={{ toolbar: [] }} theme="bubble" className="react-quill" />
                                     }
                                 </Article>
                                 <div className="uk-row">

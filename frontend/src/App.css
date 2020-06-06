@@ -23,6 +23,10 @@
   font-family: 'Loved by the King', cursive;
 }
 
+.max-width-full {
+  max-width: 100% !important;
+}
+
 .intro-svg {
   max-width: 50%;
   max-height: 50%;

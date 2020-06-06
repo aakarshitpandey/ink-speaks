@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import 'react-quill/dist/quill.snow.css'
+import 'react-quill/dist/quill.bubble.css'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Landing from './components/Landing';
 import NavBar from './components/Navigation';

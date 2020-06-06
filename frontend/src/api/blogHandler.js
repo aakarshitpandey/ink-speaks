@@ -160,6 +160,18 @@ export const subscribe = async (authorID) => {
     }
 }
 
+export const getTopTags = async () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await api.get(routes.topTags)
+            return resolve(res.data)
+        } catch (e) {
+            console.log(e)
+            return reject({ message: e.message })
+        }
+    })
+}
+
 export const isSubscribed = async (authorID) => {
     return new Promise(async (resolve, reject) => {
         try {
