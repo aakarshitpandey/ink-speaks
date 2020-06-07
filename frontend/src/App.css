@@ -391,6 +391,22 @@ nav .item:hover::before {
   }
 }
 
+.author-meta {
+  background-image: url('./background.jpg');
+}
+
+.image-meta {
+  background-image: url('./noimage.png');
+  background-size: cover;
+  background-position-x: center;
+  position: absolute;
+  top: 150px;
+  left: 0px;
+  right: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .policies span a:hover {
   text-decoration: none;
   color: #282c34;

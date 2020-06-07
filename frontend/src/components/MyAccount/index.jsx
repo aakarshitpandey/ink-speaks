@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { getUser } from '../../api/auth'
+import Meta from '../Blog/meta'
 import Posts from '../Posts/index'
 import { getUserByID } from '../../api/blogHandler'
 
@@ -35,9 +36,7 @@ class UserData extends Component {
         const { user } = this.state
         return (
             <div className="bg-faded full-height">
-                <br />
-                <br />
-                <br />
+                <Meta />
                 < div className="uk-section uk-card-body" >
                     {
                         this.state.loading ? <div>Loading...</div> :
