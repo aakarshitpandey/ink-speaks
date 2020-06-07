@@ -60,17 +60,19 @@ export const LoginComponent = (props) => {
             <div className="uk-card uk-card-default uk-margin-top uk-padding-remove">
                 <div className="">Follow the trend:<br /></div>
                 {
-                    <ul className="uk-card-body uk-text-left">
-                        {
-                            props.tags.map(tag => {
-                                return (
-                                    <li key={tag.name}>
-                                        {tag.name}
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
+                    <div className="panel-tag-display">
+                        <ul className="uk-text-left tags">
+                            {
+                                props.tags.map(tag => {
+                                    return (
+                                        <li key={tag.name}>
+                                            {tag.name}
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ul>
+                    </div>
                 }
             </div>
         </>

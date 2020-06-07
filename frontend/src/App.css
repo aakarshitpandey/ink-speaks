@@ -346,3 +346,39 @@ nav .item:hover::before {
   background-color: rgba(250, 159, 21, 0.7);
   /* border-color: black; */
 }
+
+.tags {
+  padding: 5px 5px !important;
+}
+
+.tags li {
+  align-items: center;
+  /* background: #85A3BF; */
+  background: #09d3ac;
+  border-radius: 2px;
+  color: white;
+  display: flex;
+  font-weight: 300;
+  list-style: none;
+  margin: 5px 5px;
+  overflow-x: scroll;
+  padding: 5px 10px;
+}
+
+@media(max-width: 765px) {
+  .panel-tag-display {
+    background: transparent;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px 5px 0;
+    margin-bottom: 5px;
+  }
+  
+  .tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+}
