@@ -35,7 +35,7 @@ export default class Posts extends React.Component {
             <div className="loading-spinner-component"><div uk-spinner="ratio: 3"></div></div>
             : <div>
                 {this.state.recentPosts.map((post) => {
-                    return <Post post={post} />
+                    return <Post post={post} general={this.props.general} />
                 })}
             </div>
     }

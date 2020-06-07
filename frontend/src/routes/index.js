@@ -8,5 +8,6 @@ module.exports = {
     article: '/users/article',
     myaccount: '/users/account',
     privacy: '/policy/privacy',
-    terms: '/policy/terms'
+    terms: '/policy/terms',
+    aboutDeveloper: 'http://www.aakarshit.me'
 }

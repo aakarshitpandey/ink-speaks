@@ -87,7 +87,8 @@ nav a:hover {
 .post {
   /* background:  rgba(9, 211, 172, 0.9); */
   background:  white;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.7);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
+  margin-left: 18px;
   /* border-radius: 30px; */
   /* border: 10px 10px 10px 10px solid rgba(37, 161, 136, 0.5); */
   margin-bottom: 15px;
@@ -381,4 +382,9 @@ nav .item:hover::before {
     padding: 0;
     width: 100%;
   }
+}
+
+.policies span a:hover {
+  text-decoration: none;
+  color: #282c34;
 }

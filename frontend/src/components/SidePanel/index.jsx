@@ -31,8 +31,10 @@ export default class SidePanel extends Component {
 
     render() {
         return (
-            <div>
-                <LoginComponent toggleAuth={this.toggleAuth} tags={this.state.tags} />
+            <div style={{ marginLeft: '18px', width: '100%' }}>
+                <LoginComponent toggleAuth={this.toggleAuth} />
+                <TagDisplay tags={this.state.tags} />
+                <Policies />
             </div>
         )
     }
@@ -46,7 +48,7 @@ export const LoginComponent = (props) => {
                     loggedIn() ? <>
                         Use our ink to pen your words....
                     <br />
-                        <Link to={ROUTES.addArticle}><div className="uk-button-small">Add Blog</div></Link>
+                        <Link to={ROUTES.addArticle}><div className="uk-button-small uk-link-text">Add Blog</div></Link>
                     </> :
                         <div className="uk-card-body">
                             <p className="uk-text-left">Let your ink do the talking...</p>
@@ -57,24 +59,44 @@ export const LoginComponent = (props) => {
                         </div>
                 }
             </div>
-            <div className="uk-card uk-card-default uk-margin-top uk-padding-remove">
-                <div className="">Follow the trend:<br /></div>
-                {
-                    <div className="panel-tag-display">
-                        <ul className="uk-text-left tags">
-                            {
-                                props.tags.map(tag => {
-                                    return (
-                                        <li key={tag.name}>
-                                            {tag.name}
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
-                    </div>
-                }
-            </div>
         </>
     )
-} 
+}
+
+export const TagDisplay = (props) => (
+    <div className="uk-card uk-card-default uk-margin-top uk-padding-remove">
+        <div className="">Follow the trend:<br /></div>
+        {
+            <div className="panel-tag-display">
+                <ul className="uk-text-left tags">
+                    {
+                        props.tags.map(tag => {
+                            return (
+                                <li key={tag.name}>
+                                    {tag.name}
+                                </li>
+                            )
+                        })
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+)
+
+export const Policies = () => (
+    <div className="policies">
+        <hr />
+        <span>
+            <Link to={ROUTES.privacy} className="uk-text-meta">Privacy</Link>
+        </span>
+        <span className="uk-text-meta"> | </span>
+        <span>
+            <Link to={ROUTES.terms} className="uk-text-meta">Terms</Link>
+        </span>
+        <span className="uk-text-meta"> | </span>
+        <span>
+            <a href={ROUTES.aboutDeveloper} target="_blank" className="uk-text-meta">About</a>
+        </span>
+    </div>
+)
