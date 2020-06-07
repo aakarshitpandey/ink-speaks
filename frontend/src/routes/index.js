@@ -9,5 +9,6 @@ module.exports = {
     myaccount: '/users/account',
     privacy: '/policy/privacy',
     terms: '/policy/terms',
+    updatePost: '/update',
     aboutDeveloper: 'http://www.aakarshit.me'
 }

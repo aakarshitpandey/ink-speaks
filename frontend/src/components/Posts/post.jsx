@@ -79,7 +79,15 @@ export default class Post extends React.Component {
                     </> :
                         <ul class="uk-iconnav">
                             <li><Link className="uk-link-reset" to={ROUTES.addArticle}><div uk-icon="icon: plus"></div></Link></li>
-                            <li><div uk-icon="icon: file-edit"></div></li>
+                            <li><Link className="uk-link-reset" to={{
+                                pathname: ROUTES.updatePost,
+                                state: {
+                                    post: {
+                                        ...this.props.post,
+                                        blogContent: this.state.blogContent
+                                    }
+                                }
+                            }}><div uk-icon="icon: file-edit"></div></Link></li>
                             <li><div uk-icon="icon: copy"></div></li>
                             <li><div uk-icon="icon: trash" onClick={this.toggleAlert}></div></li>
                             <li><div><span className="uk-text-meta">{this.props.post.authorName}</span></div></li>

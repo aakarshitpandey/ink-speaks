@@ -1,11 +1,10 @@
 import React from 'react'
 
 export default class InputTag extends React.Component {
-    constructor() {
-        super();
-
+    constructor(props) {
+        super(props);
         this.state = {
-            tags: []
+            tags: props.taglist || []
         };
     }
 
@@ -38,6 +37,7 @@ export default class InputTag extends React.Component {
 
     render() {
         const { tags } = this.state;
+        console.log(tags)
 
         return (
             <div className="input-tag">

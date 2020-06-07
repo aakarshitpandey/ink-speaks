@@ -11,6 +11,7 @@ import Compose from './components/ComposeArticle';
 import Blog from './components/Blog';
 import MyAccount from './components/MyAccount';
 import PrivacyPolicy from './components/Policy/privacypolicy'
+import UpdatePost from './components/TextEditor/update'
 import Terms from './components/Policy/terms'
 
 const App = () => (
@@ -24,6 +25,7 @@ const App = () => (
       <Route path={`${ROUTES.myaccount}`} component={MyAccount} />
       <Route path={`${ROUTES.terms}`} component={Terms} />
       <Route path={`${ROUTES.privacy}`} component={PrivacyPolicy} />
+      <Route path={`${ROUTES.updatePost}`} component={UpdatePost} />
     </div>
   </Router>
 )
