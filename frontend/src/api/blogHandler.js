@@ -32,6 +32,24 @@ export const addBlog = async (body) => {
     }
 }
 
+export const updateBlog = async (body) => {
+    const formData = new FormData()
+    formData.append("blog", JSON.stringify(body))
+    try {
+        const res = await api.post(routes.update, formData/*{ ...body }*/, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${getToken()}`
+            }
+        })
+        console.log(res)
+        return Promise.resolve(res)
+    } catch (err) {
+        console.log(err)
+        return Promise.reject({ msg: err })
+    }
+}
+
 export const getBlogList = async (body) => {
     try {
         const res = await api.get(routes.blogs, {

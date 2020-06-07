@@ -222,6 +222,38 @@ router.post('/compose', authenticate, upload.none(), async (req, res, next) => {
   }
 })
 
+router.post('/updateBlog', authenticate, upload.none(), async (req, res, next) => {
+  console.log(`Blog update request recieved`)
+  const blog = JSON.parse(req.body.blog)
+  req.body = { ...req.body, ...blog }
+  const article = await Blog.findById(req.body.postId)
+  if (req.userInfo._id && article) {
+    try {
+      await Content.updateOne({ _id: article.data }, { data: req.body.data })
+      article.title = req.body.title
+      article.categories = req.body.categories
+      article.save()
+        .then(async (blog) => {
+          try {
+            await deleteTags(blog.categories, blog._id)
+            addTags(blog.categories, blog._id)
+            res.status(200).json({ blog: blog, msg: 'The blog has been updated' })
+          } catch (err) {
+            console.log(err)
+            res.status(400).json({ msg: 'The userDB could not be updated' })
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(400).json({ msg: "Blog couldn't be saved!" });
+        })
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ msg: "Blog couldn't be saved!" });
+    }
+  }
+})
+
 router.get('/blogContent/:id', async (req, res) => {
   try {
     const content = await Content.findById(req.params.id)

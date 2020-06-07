@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactQuill from 'react-quill'
 import { Button, Input, InputContainer } from 'uikit-react'
-import { addBlog, getBlogContentsById } from '../../api/blogHandler'
+import { updateBlog, getBlogContentsById } from '../../api/blogHandler'
 import { Alerts } from '../Utils/alert'
 import InputTag from './inputTags'
 import { Container } from 'uikit-react'
@@ -61,6 +61,7 @@ class UpdateTextEditor extends Component {
     onSubmit = async (e) => {
         e.preventDefault()
         const body = {
+            postId: this.props.post._id,
             title: this.state.title,
             data: this.state.text,
             categories: [...this.state.categories],
@@ -68,7 +69,7 @@ class UpdateTextEditor extends Component {
         body.isPosted = (`${e.target.getAttribute('name')}`).localeCompare("Draft") === 0 ? false : true
         this.setState({ loading: true })
         try {
-            const res = await addBlog(body);
+            const res = await updateBlog(body);
             this.setState({ msg: res.data.msg, loading: false, text: '' })
         } catch (err) {
             console.log(err)
