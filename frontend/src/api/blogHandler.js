@@ -15,12 +15,28 @@ export const getUserByID = async () => {
 
 export const addBlog = async (body) => {
     const formData = new FormData()
-    formData.append("title", body.title)
-    formData.append("data", body.data)
-    formData.append("categories", body.categories)
+    formData.append("blog", JSON.stringify(body))
     console.log(body.data)
     try {
         const res = await api.post(routes.compose, formData/*{ ...body }*/, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${getToken()}`
+            }
+        })
+        console.log(res)
+        return Promise.resolve(res)
+    } catch (err) {
+        console.log(err)
+        return Promise.reject({ msg: err })
+    }
+}
+
+export const updateBlog = async (body) => {
+    const formData = new FormData()
+    formData.append("blog", JSON.stringify(body))
+    try {
+        const res = await api.post(routes.update, formData/*{ ...body }*/, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${getToken()}`
@@ -162,6 +178,18 @@ export const subscribe = async (authorID) => {
     }
 }
 
+export const getTopTags = async () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await api.get(routes.topTags)
+            return resolve(res.data)
+        } catch (e) {
+            console.log(e)
+            return reject({ message: e.message })
+        }
+    })
+}
+
 export const isSubscribed = async (authorID) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -170,7 +198,6 @@ export const isSubscribed = async (authorID) => {
                     Authorization: `Bearer ${getToken()}`
                 }
             })
-            console.log(res.data)
             return resolve(res.data)
         } catch (e) {
             console.log(e)

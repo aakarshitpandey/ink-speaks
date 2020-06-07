@@ -1,6 +1,6 @@
 import React from 'react'
 import { getUser } from '../../api/auth'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import * as ROUTES from '../../routes/index'
 import { getBlogContentsById, deleteBlog } from '../../api/blogHandler'
 import Loading from '../Utils/loading'
@@ -60,14 +60,41 @@ export default class Post extends React.Component {
                     {
                         this.state.loading ?
                             <Loading /> :
-                            <div onClick={this.onClick} className="post-data" dangerouslySetInnerHTML={{ __html: this.state.blogContent }}></div>
+                            <div onClick={this.onClick} className="post-data uk-text-left" dangerouslySetInnerHTML={{ __html: this.state.blogContent }}></div>
                     }
-                    <ul class="uk-iconnav">
-                        <li><div uk-icon="icon: plus"></div></li>
-                        <li><div uk-icon="icon: file-edit"></div></li>
-                        <li><div uk-icon="icon: copy"></div></li>
-                        <li><div uk-icon="icon: trash" onClick={this.toggleAlert}></div></li>
-                    </ul>
+                    {this.props.general ? <>
+                        <ul class="uk-iconnav">
+                            <li>
+                                <div>
+                                    <span className="uk-text-meta">{this.props.post.authorName}</span>
+                                </div>
+                            </li>
+                            <li><span className="uk-text-meta"> | </span></li>
+                            <li>
+                                <div>
+                                    <span className="uk-text-meta">{parseInt(this.state.blogContent.length / 600)} min read</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </> :
+                        <ul class="uk-iconnav">
+                            <li><Link className="uk-link-reset" to={ROUTES.addArticle}><div uk-icon="icon: plus"></div></Link></li>
+                            <li><Link className="uk-link-reset" to={{
+                                pathname: ROUTES.updatePost,
+                                state: {
+                                    post: {
+                                        ...this.props.post,
+                                        blogContent: this.state.blogContent
+                                    }
+                                }
+                            }}><div uk-icon="icon: file-edit"></div></Link></li>
+                            <li><div uk-icon="icon: copy"></div></li>
+                            <li><div uk-icon="icon: trash" onClick={this.toggleAlert}></div></li>
+                            <li><div><span className="uk-text-meta">{this.props.post.authorName}</span></div></li>
+                            <li><span className="uk-text-meta"> | </span></li>
+                            <li><div><span className="uk-text-meta">{parseInt(this.state.blogContent.length / 600)} min read</span></div></li>
+                        </ul>
+                    }
                     {
                         this.state.showAlert ? <DeleteMessage noAction={this.toggleAlert} yesAction={this.deletePost} /> : <></>
                     }

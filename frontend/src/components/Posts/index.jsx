@@ -32,10 +32,10 @@ export default class Posts extends React.Component {
 
     render() {
         return this.state.loading ?
-            <div className="loading-spinner-component"><div uk-spinner="ratio: 3"></div></div>
+            <div className="loading-spinner-component"><div uk-spinner="ratio: 1"></div></div>
             : <div>
                 {this.state.recentPosts.map((post) => {
-                    return <Post post={post} />
+                    return <Post post={post} general={this.props.general} />
                 })}
             </div>
     }

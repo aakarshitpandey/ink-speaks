@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { ForgotPassword } from '../SignUp/forgotPassword'
-import { Link, Route } from 'react-router-dom'
+import React, { Component, useState } from 'react'
+import { Link, Route, Redirect } from 'react-router-dom'
 import SignIn from '../SignIn'
-import { getUser } from '../../api/auth'
+import { getUser, registerFacebook, qsLoggedIn } from '../../api/auth'
 import * as ROUTES from '../../routes/index'
 import LogoutButton from '../SignIn/logoutbtn'
 import { withRouter } from 'react-router-dom'
+import { SignUpButton } from '../SignUp'
 
 class NavBar extends Component {
     constructor(props) {
@@ -16,6 +16,7 @@ class NavBar extends Component {
     }
 
     componentDidMount() {
+        qsLoggedIn(this.props.location.search)
         const user = getUser()
         if (user && user != null) {
             this.setState({ isLoggedIn: true })
@@ -35,11 +36,13 @@ class NavBar extends Component {
     }
 }
 
-const NavNoAuth = (props) => (
-    <>
-        <nav className="navbar navbar-expand-lg navbar-light bg-default fixed-top" uk-navbar>
+const NavNoAuth = (props) => {
+    const [collapsed, setCollapsed] = useState(true)
+
+    return (<>
+        <nav className={`navbar navbar-expand-lg navbar-light bg-default fixed-top ${collapsed ? "" : "nav-bg-dark"}`} uk-navbar>
             <Link to={ROUTES.landing} className="navbar-brand"><span className="frijole">Ink </span><span className="loved-by-king">Speaks</span></Link>
-            <button className="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="navbar-toggler" onClick={() => { setCollapsed(!collapsed) }} data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div id="my-nav" className="collapse navbar-collapse">
@@ -54,22 +57,23 @@ const NavNoAuth = (props) => (
                 <div className="nav-item uk-navbar-item">
                     <SignIn toggleAuth={props.toggleAuth} />
                 </div>
-                <li className="nav-item active uk-navbar-item">
-                    <ForgotPassword />
-                </li>
+                <div className="nav-item uk-navbar-item">
+                    <SignUpButton />
+                </div>
             </div>
         </nav>
         {/* <br />
         <br />
         <br /> */}
-    </>
-)
+    </>)
+}
 
-const NavAuth = (props) => (
-    <>
-        <nav className="navbar navbar-expand-lg navbar-light bg-default fixed-top" uk-navbar>
+const NavAuth = (props) => {
+    const [collapsed, setCollapsed] = useState(true)
+    return (<>
+        <nav className={`navbar navbar-expand-lg navbar-light bg-default fixed-top ${collapsed ? "" : "nav-bg-dark"}`} uk-navbar>
             <Link to={ROUTES.landing} className="navbar-brand"><span className="frijole">Ink </span><span className="loved-by-king">Speaks</span></Link>
-            <button className="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="navbar-toggler" onClick={() => { setCollapsed(!collapsed) }} data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div id="my-nav" className="collapse navbar-collapse">
@@ -81,8 +85,8 @@ const NavAuth = (props) => (
         {/* <br />
         <br />
         <br /> */}
-    </>
-)
+    </>)
+}
 
 const LeftNav = () => (
     <ul className="navbar-nav mr-auto">

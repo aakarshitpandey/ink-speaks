@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Livvic:ital,wght@1,500&family=Uncial+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Livvic,wght@1,500&family=Uncial+Antiqua&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Frijole&family=Great+Vibes&family=Loved+by+the+King&family=Source+Code+Pro:wght@500&display=swap');
 
 * {
@@ -23,6 +23,10 @@
   font-family: 'Loved by the King', cursive;
 }
 
+.max-width-full {
+  max-width: 100% !important;
+}
+
 .intro-svg {
   max-width: 50%;
   max-height: 50%;
@@ -32,9 +36,27 @@ nav {
   background-color: rgba(264, 264, 264, 0.2);
 }
 
+@media(max-width: 700px) {
+  .nav-bg-dark {
+    background-color: rgba(34, 34, 34, 0.8);
+  }
+
+  .nav-bg-dark a {
+    color: white;
+  }
+
+  .nav-bg-dark .navbar-brand span {
+    color: white;
+  }
+
+  .hide-sm-scroll {
+    display: none;
+  }
+}
+
 nav a {
-  /* font-family: 'Uncial Antiqua', cursive; */
   font-family: 'Source Code Pro', monospace;
+  /* font-family: 'Uncial Antiqua', cursive; */
   color: black;
 }
 
@@ -65,7 +87,8 @@ nav a:hover {
 .post {
   /* background:  rgba(9, 211, 172, 0.9); */
   background:  white;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.7);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
+  margin-left: 18px;
   /* border-radius: 30px; */
   /* border: 10px 10px 10px 10px solid rgba(37, 161, 136, 0.5); */
   margin-bottom: 15px;
@@ -74,6 +97,13 @@ nav a:hover {
 .post-data {
   max-height: 500px;
   overflow: hidden;
+}
+
+.post-data * {
+  font-family: 'Livvic', sans-serif;
+  font-size: 1em;
+  font-style: normal;
+  line-height: 1.2;
 }
 
 #signUpContainer {
@@ -244,4 +274,140 @@ nav .item:hover::before {
 
 .no-delete:hover {
   background: rgba(255, 230, 0, 0.2);
+}
+
+.input-tag {
+  background: white;
+  border: 1px solid #d6d6d6;
+  border-radius: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px 5px 0;
+}
+
+.tag-display {
+  background: transparent;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px 5px 0;
+  margin-bottom: 5px;
+}
+
+.input-tag input {
+  border: none;
+  width: 100%;
+}
+
+.input-tag__tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.input-tag__tags li {
+  align-items: center;
+  /* background: #85A3BF; */
+  background: #09d3ac;
+  border-radius: 2px;
+  color: white;
+  display: flex;
+  font-weight: 300;
+  list-style: none;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  padding: 5px 10px;
+}
+
+.input-tag__tags li button {
+  align-items: center;
+  appearance: none;
+  background: #333333;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 12px;
+  height: 15px;
+  justify-content: center;
+  line-height: 0;
+  margin-left: 8px;
+  padding: 0;
+  transform: rotate(45deg);
+  width: 15px;
+}
+
+.input-tag__tags li.input-tag__tags__input {
+  background: none;
+  flex-grow: 1;
+  padding: 0;
+}
+
+.register-btn {
+  background-color: #F9AA33;
+  border-color: black;
+}
+
+.register-btn:hover {
+  background-color: rgba(250, 159, 21, 0.7);
+  /* border-color: black; */
+}
+
+.tags {
+  padding: 5px 5px !important;
+}
+
+.tags li {
+  align-items: center;
+  /* background: #85A3BF; */
+  background: #09d3ac;
+  border-radius: 2px;
+  color: white;
+  display: flex;
+  font-weight: 300;
+  list-style: none;
+  margin: 5px 5px;
+  overflow-x: scroll;
+  padding: 5px 10px;
+}
+
+@media(max-width: 765px) {
+  .panel-tag-display {
+    background: transparent;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px 5px 0;
+    margin-bottom: 5px;
+  }
+  
+  .tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+}
+
+.author-meta {
+  background-image: url('./background.jpg');
+}
+
+.image-meta {
+  background-image: url('./noimage.png');
+  background-size: cover;
+  background-position-x: center;
+  position: absolute;
+  top: 150px;
+  left: 0px;
+  right: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.policies span a:hover {
+  text-decoration: none;
+  color: #282c34;
 }

@@ -2,6 +2,7 @@ module.exports = {
     login: 'login/',
     register: 'register/',
     compose: 'compose/',
+    update: 'updateBlog/',
     blogs: 'blogs/',
     subscribedBlogs: 'blogs/subscriptions/',
     blogpost: 'blogpost/',
@@ -11,4 +12,6 @@ module.exports = {
     userProfile: 'userProfile/',
     blogContent: 'blogContent/',
     blogDelete: 'blog/',
+    facebook: 'auth/facebook/',
+    topTags: 'topTags'
 }

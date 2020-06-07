@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import SignUp from '../SignUp'
 import Posts from '../Posts'
 import { loggedIn } from '../../api/auth'
 import PenSVG from './feather.jsx'
 import WordOfTheDay from '../WordOfTheDay'
+import SidePanel from '../SidePanel'
 
 class Landing extends Component {
 
@@ -21,7 +21,7 @@ class Landing extends Component {
     }
 
     render() {
-        let trendingClassList = "uk-section uk-section-default col-md-6 col-lg-6 col-sm-12 post-container full-height"
+        let trendingClassList = "uk-section uk-section-default col-md-12 col-lg-12 col-sm-12 post-container full-height"
         if (this.state.isLoggedIn) {
             trendingClassList = "uk-section uk-section-default col-md-12 col-lg-12 col-sm-12 post-container bg-faded full-height"
         } //end if
@@ -39,19 +39,20 @@ class Landing extends Component {
                     {/* <div className="uk-width-1-2@m uk-flex-first"> */}
                     <div id="trending-container" className={trendingClassList}>
                         <h1 className="uk-text-center"> Trending</h1>
-                        <div className="uk-container uk-container-small">
-                            <Posts general={true} />
+                        <div className="row max-width-full" >
+                            <div className="col-sm-12 col-lg-10 col-md-9"><Posts general={true} /></div>
+                            <div className="col-sm-12 col-lg-2 col-md-3"><SidePanel /></div>
                         </div>
                     </div>
                     {/* </div> */}
                     {/* <div className="uk-width-1-2@m"> */}
-                    {this.state.isLoggedIn ? <></> :
+                    {/* {this.state.isLoggedIn ? <></> :
                         <div id="signUpContainer" className="uk-tile uk-tile-muted uk-tile-default col-md-6 col-lg-6 col-sm-12">
                             <div className="uk-card uk-card-secondary uk-card-body">
                                 <SignUp />
                             </div>
                         </div>
-                    }
+                    } */}
                     {/* </div> */}
                 </div>
             </>

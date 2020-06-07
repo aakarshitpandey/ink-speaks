@@ -3,6 +3,7 @@ const express = require('express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const Tags = require('../models/tags')
 const passport = require('passport')
 const Blog = require('../models/blog')
 const Content = require('../models/content')
@@ -83,6 +84,46 @@ router.post('/register', (req, res) => {
   })
 })
 
+router.get('/auth/facebook', passport.authenticate('facebook', { authType: 'rerequest', scope: ['email'] }))
+
+router.get('/auth/facebook/callback', (req, res, next) => {
+  passport.authenticate('facebook', { failureRedirect: '/login' }, (err, user, info) => {
+    if (err) {
+      console.log(err)
+      res.status(400).json({ msg: 'There was an error' });
+      return
+    }
+
+    if (!user) {
+      console.log(`invalid login`)
+      res.status(404).json({ msg: 'Invalid Token.' })
+      return
+    }
+    //if authentication successfull
+    const payload = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email
+    };
+
+    console.log(payload)
+
+    //sign token
+    jwt.sign(
+      payload,
+      process.env.PRIVATE_KEY,
+      { expiresIn: 31556926 },
+      (err, token) => {
+        if (err) {
+          res.status(400).json({ error: 'Login Failed, try again' })
+        }
+        res.redirect('/users/dash?token=' + token)
+      }
+    )
+  })(req, res, next)
+})
+
 //login
 router.post('/login', (req, res) => {
 
@@ -140,6 +181,8 @@ router.post('/login', (req, res) => {
 
 router.post('/compose', authenticate, upload.none(), async (req, res, next) => {
   console.log(`Blog Post request recieved`)
+  const blog = JSON.parse(req.body.blog)
+  req.body = { ...req.body, ...blog }
   if (req.userInfo._id) {
     const { userInfo } = req
     const content = new Content({ data: req.body.data })
@@ -156,12 +199,45 @@ router.post('/compose', authenticate, upload.none(), async (req, res, next) => {
       newBlog.save()
         .then((blog) => {
           try {
+            addTags(blog.categories, blog._id)
             updateUser(userInfo._id, { blogs: [...(userInfo.blogs), blog._id] })
               .then((user) => res.status(200).json({ blog: blog, msg: 'The blog has been saved' }))
               .catch((err) => {
                 console.log(err)
                 res.status(400).json({ msg: 'The userDB could not be updated' })
               })
+          } catch (err) {
+            console.log(err)
+            res.status(400).json({ msg: 'The userDB could not be updated' })
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(400).json({ msg: "Blog couldn't be saved!" });
+        })
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ msg: "Blog couldn't be saved!" });
+    }
+  }
+})
+
+router.post('/updateBlog', authenticate, upload.none(), async (req, res, next) => {
+  console.log(`Blog update request recieved`)
+  const blog = JSON.parse(req.body.blog)
+  req.body = { ...req.body, ...blog }
+  const article = await Blog.findById(req.body.postId)
+  if (req.userInfo._id && article) {
+    try {
+      await Content.updateOne({ _id: article.data }, { data: req.body.data })
+      article.title = req.body.title
+      article.categories = req.body.categories
+      article.save()
+        .then(async (blog) => {
+          try {
+            await deleteTags(blog.categories, blog._id)
+            addTags(blog.categories, blog._id)
+            res.status(200).json({ blog: blog, msg: 'The blog has been updated' })
           } catch (err) {
             console.log(err)
             res.status(400).json({ msg: 'The userDB could not be updated' })
@@ -337,6 +413,8 @@ router.delete('/blog/:id', authenticate, async (req, res) => {
     } //end try-catch
     await Blog.deleteOne({ _id: id })
     const author = await User.findOne({ _id: authorID })
+    if (blog.categories)
+      deleteTags(blog.categories, id)
     for (let i = 0; i < author.blogs.length; i++) {
       if (`${author.blogs[i]}`.localeCompare(`${id}`) === 0) {
         author.blogs.splice(i, 1)
@@ -388,6 +466,19 @@ router.get('/isSubscribed', authenticate, async (req, res) => {
   }
 })
 
+router.get('/topTags', async (req, res) => {
+  try {
+    const tags = (await Tags.find({})).sort(compareTags)
+    let resTags = tags
+    if (resTags.length > 30)
+      resTags = resTags.slice(0, 30)
+    res.status(200).json({ tags: resTags })
+  } catch (e) {
+    console.log(e.message)
+    res.status(500).json({ msg: e.message })
+  }
+})
+
 async function authenticate(req, res, next) {
   console.log(`authenticate`)
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
@@ -421,11 +512,73 @@ const updateUser = async (id, data) => {
   }
 }
 
+const addTags = async (tags, blogID) => {
+  return new Promise(async (resolve, reject) => {
+    if (!tags) return reject({ message: 'Tag could not be added' })
+    Promise.all(tags.map(tag => {
+      return new Promise(async (res, rej) => {
+        try {
+          const retTag = await Tags.findOne({ name: tag })
+          if (!retTag) {
+            const newTag = new Tags({ name: tag, blogs: [blogID] })
+            await newTag.save()
+            res()
+          } else {
+            retTag.blogs.push(blogID)
+            await Tags.updateOne({ _id: retTag._id }, { blogs: retTag.blogs })
+            res()
+          }
+        } catch (e) {
+          rej()
+        }
+      })
+    }))
+    resolve({ message: 'Tags have been updated' })
+  })
+}
+
+const deleteTags = async (tags, blogID) => {
+  return new Promise(async (resolve, reject) => {
+    if (!tags) return reject({ message: 'Tag could not be deleted' })
+    Promise.all(tags.map(tag => {
+      return new Promise(async (res, rej) => {
+        try {
+          const retTag = await Tags.findOne({ name: tag })
+          if (retTag) {
+            for (let i = 0; i < retTag.blogs.length; i++) {
+              if (`${retTag.blogs[i]}`.localeCompare(`${blogID}`) === 0) {
+                retTag.blogs.splice(i, 1)
+                break
+              } //end if
+            } //end for
+            if (retTag.blogs.length === 0) {
+              await Tags.deleteOne({ _id: retTag._id })
+            } //end if
+            res()
+          }
+        } catch (e) {
+          rej()
+        } //end try-catch
+      })
+    }))
+    resolve({ message: 'Tags have been updated' })
+  })
+}
+
 const compareDates = (b1, b2) => {
   if (b1.date < b2.date) {
     return 1
   } else if (b1.date > b2.date) {
     return -1
+  }
+  return 0
+}
+
+const compareTags = (a, b) => {
+  if (a.blogs.length < b.blogs.length) {
+    return -1
+  } else if (a.blogs.length > b.blogs.length) {
+    return 1
   }
   return 0
 }

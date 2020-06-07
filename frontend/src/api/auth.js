@@ -1,4 +1,4 @@
-import api from './config'
+import api, { baseURL } from './config'
 import * as routes from './routes'
 const jwt_decode = require('jwt-decode')
 
@@ -10,6 +10,10 @@ export const register = async (body) => {
         console.log(err)
         return Promise.reject(err)
     }
+}
+
+export const registerFacebook = () => {
+    window.location = `api/${routes.facebook}`
 }
 
 export const login = async (body) => {
@@ -53,3 +57,14 @@ export const loggedIn = () => {
     return localStorage.getItem('jwtToken') ? true : false
 }
 
+export const qsLoggedIn = (queryString) => {
+    if (queryString) {
+        let search = new URLSearchParams(queryString)
+        let token = search.get('token')
+        if (token) {
+            localStorage.setItem("jwtToken", token)
+            return true
+        }
+    }
+    return false;
+}

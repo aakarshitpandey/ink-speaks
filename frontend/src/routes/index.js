@@ -6,5 +6,9 @@ module.exports = {
     dashboard: '/users/dash',
     addArticle: '/users/compose',
     article: '/users/article',
-    myaccount: '/users/account'
+    myaccount: '/users/account',
+    privacy: '/policy/privacy',
+    terms: '/policy/terms',
+    updatePost: '/update',
+    aboutDeveloper: 'http://www.aakarshit.me'
 }
