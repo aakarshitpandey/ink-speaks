@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Livvic:ital,wght@1,500&family=Uncial+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Livvic,wght@1,500&family=Uncial+Antiqua&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Frijole&family=Great+Vibes&family=Loved+by+the+King&family=Source+Code+Pro:wght@500&display=swap');
 
 * {
@@ -97,6 +97,13 @@ nav a:hover {
 .post-data {
   max-height: 500px;
   overflow: hidden;
+}
+
+.post-data * {
+  font-family: 'Livvic', sans-serif;
+  font-size: 1em;
+  font-style: normal;
+  line-height: 1.2;
 }
 
 #signUpContainer {

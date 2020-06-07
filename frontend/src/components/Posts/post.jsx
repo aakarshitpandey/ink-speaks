@@ -60,7 +60,7 @@ export default class Post extends React.Component {
                     {
                         this.state.loading ?
                             <Loading /> :
-                            <div onClick={this.onClick} className="post-data" dangerouslySetInnerHTML={{ __html: this.state.blogContent }}></div>
+                            <div onClick={this.onClick} className="post-data uk-text-left" dangerouslySetInnerHTML={{ __html: this.state.blogContent }}></div>
                     }
                     {this.props.general ? <>
                         <ul class="uk-iconnav">
@@ -82,8 +82,8 @@ export default class Post extends React.Component {
                             <li><div uk-icon="icon: file-edit"></div></li>
                             <li><div uk-icon="icon: copy"></div></li>
                             <li><div uk-icon="icon: trash" onClick={this.toggleAlert}></div></li>
-                            <li><div className="uk-text-meta">  {this.props.post.authorName}</div></li>
                             <li><div><span className="uk-text-meta">{this.props.post.authorName}</span></div></li>
+                            <li><span className="uk-text-meta"> | </span></li>
                             <li><div><span className="uk-text-meta">{parseInt(this.state.blogContent.length / 600)} min read</span></div></li>
                         </ul>
                     }
